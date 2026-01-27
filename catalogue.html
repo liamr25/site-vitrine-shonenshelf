@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shonen Shelf - Catalogue</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Russo+One&family=Roboto:wght@300;400;700&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "shonen-red": "#DC2626",
+                        "shonen-dark": "#0f172a",
+                        "shonen-black": "#020617",
+                        "shonen-gray": "#1e293b",
+                    },
+                    fontFamily: {
+                        headings: ['"Russo One"', "sans-serif"],
+                        body: ['"Roboto"', "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+
+<body class="bg-shonen-dark text-white font-body min-h-screen flex flex-col">
+    <nav class="bg-shonen-black border-b border-shonen-red sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-20 items-center">
+                <div class="cursor-pointer">
+                    <a href="index.html">
+                        <span
+                            class="font-headings text-2xl tracking-wider text-white hover:text-shonen-red transition-colors">
+                            SHONEN
+                            <span class="text-shonen-red">
+                                SHELF
+                            </span>
+                        </span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-6 text-sm font-bold uppercase tracking-wide">
+                    <button class="hover:text-shonen-red transition-colors"><a href="index.html">Accueil</a>
+                    </button>
+                    <button class="hover:text-shonen-red transition-colors"><a href="catalogue.html">Catalogue</a>
+                    </button>
+                    <button class="hover:text-shonen-red transition-colors"><a href="a-propos.html">À propos</a>
+                    </button>
+                    <button class="hover:text-shonen-red transition-colors"><a href="equipe.html">L'équipe</a>
+                    </button>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="showPage('login')" class="text-gray-300 hover:text-white flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        <span class="hidden sm:inline text-xs">Connexion / Inscription</span>
+                    </button>
+                    <button onclick="showPage('panier')"
+                        class="bg-shonen-red hover:bg-red-700 text-white p-2 rounded-sm transition-colors relative">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                        <span
+                            class="absolute -top-2 -right-2 bg-white text-shonen-red text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main class="flex-grow">
+        <div id="catalogue" class="page-section">
+            <div class="max-w-7xl mx-auto px-4 py-12">
+                <h2 class="text-4xl font-headings text-shonen-red mb-8 uppercase border-b border-gray-700 pb-4">
+                    Le Catalogue
+                </h2>
+
+
+                <div class="flex flex-wrap gap-4 mb-8">
+                    <button class="bg-shonen-red text-white px-4 py-2 rounded font-bold text-sm">
+                        TOUT
+                    </button>
+                    <button class="bg-shonen-gray hover:bg-gray-700 text-white px-4 py-2 rounded font-bold text-sm">
+                        Manga
+                    </button>
+                    <button class="bg-shonen-gray hover:bg-gray-700 text-white px-4 py-2 rounded font-bold text-sm">
+                        Comics
+                    </button>
+                    <button class="bg-shonen-gray hover:bg-gray-700 text-white px-4 py-2 rounded font-bold text-sm">
+                        BD
+                    </button>
+                </div>
+
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                    <div
+                        class="bg-shonen-gray group hover:shadow-[0_0_15px_rgba(220,38,38,0.3)] transition-all duration-300">
+                        <div class="h-64 overflow-hidden bg-black relative">
+                            <span
+                                class="absolute top-2 left-2 bg-shonen-red text-white text-xs font-bold px-2 py-1">NOUVEAU</span>
+                            <img src="https://placehold.co/400x600/222/red?text=MANGA"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">One Piece Vol. 100</h3>
+                            <p class="text-gray-400 text-sm mb-3">Eiichiro Oda</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-shonen-red font-bold text-xl">6.90 €</span>
+                                <button class="text-sm border border-gray-600 hover:border-white px-3 py-1 rounded">
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-shonen-gray group hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all duration-300">
+                        <div class="h-64 overflow-hidden bg-black relative">
+                            <img src="https://placehold.co/400x600/222/3b82f6?text=BATMAN"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg mb-1">Batman: Year One</h3>
+                            <p class="text-gray-400 text-sm mb-3">Frank Miller</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-shonen-red font-bold text-xl">15.00 €</span>
+                                <button class="text-sm border border-gray-600 hover:border-white px-3 py-1 rounded">
+                                    +
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="bg-shonen-black py-8 text-center border-t border-gray-800 mt-auto">
+        <p class="text-gray-500 text-sm">
+            &copy; 2026 Shonen Shelf
+        </p>
+    </footer>
+</body>
+
+</html>
