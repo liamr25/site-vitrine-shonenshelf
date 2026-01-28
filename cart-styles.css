@@ -1,0 +1,215 @@
+/* Styles du panier - Fichier externe */
+
+.toast-notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(34, 197, 94, 0.9);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    animation: slideInUp 0.4s ease-out, slideOutDown 0.4s ease-out 2.6s forwards;
+    z-index: 1000;
+    font-weight: bold;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideOutDown {
+    to {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: #1e293b;
+    border: 2px solid #DC2626;
+    border-radius: 12px;
+    padding: 32px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideInUp 0.3s ease-out;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid rgba(220, 38, 38, 0.2);
+    margin-bottom: 8px;
+}
+
+.cart-item-details {
+    flex: 1;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.quantity-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #DC2626;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quantity-btn:hover {
+    background-color: #991b1b;
+    transform: scale(1.1);
+}
+
+.remove-btn {
+    background-color: #EF4444;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.75rem;
+}
+
+.remove-btn:hover {
+    background-color: #991b1b;
+}
+
+.cart-summary {
+    background-color: rgba(30, 41, 59, 0.8);
+    border-top: 2px solid #DC2626;
+    padding: 16px;
+    margin-top: 16px;
+    border-radius: 8px;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 32px;
+    color: #9CA3AF;
+}
+
+.checkout-btn {
+    width: 100%;
+    background-color: #DC2626;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.checkout-btn:hover {
+    background-color: #991b1b;
+    transform: translateY(-2px);
+}
+
+.checkout-btn:disabled {
+    background-color: #6B7280;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Sélecteur de quantité pour les cartes produits */
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f3f4f6;
+    border-radius: 6px;
+    padding: 4px 8px;
+    width: fit-content;
+}
+
+.quantity-btn-product {
+    width: 28px;
+    height: 28px;
+    border: 1px solid #d1d5db;
+    background-color: white;
+    color: #DC2626;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-btn-product:hover {
+    background-color: #DC2626;
+    color: white;
+    border-color: #DC2626;
+}
+
+.quantity-btn-product:active {
+    transform: scale(0.95);
+}
+
+.product-quantity {
+    width: 40px;
+    text-align: center;
+    border: none;
+    background-color: transparent;
+    font-weight: bold;
+    font-size: 16px;
+    color: #1f2937;
+}
+
+.product-quantity:focus {
+    outline: none;
+}
+
+/* Conteneur des contrôles de produit */
+.product-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 12px;
+}

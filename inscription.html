@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shonen Shelf - Inscription</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Russo+One&family=Roboto:wght@300;400;700&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="cart-styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "shonen-red": "#DC2626",
+                        "shonen-dark": "#0f172a",
+                        "shonen-black": "#020617",
+                        "shonen-gray": "#1e293b",
+                    },
+                    fontFamily: {
+                        headings: ['"Russo One"', "sans-serif"],
+                        body: ['"Roboto"', "sans-serif"],
+                    },
+                    keyframes: {
+                        slideInUp: {
+                            "0%": { opacity: "0", transform: "translateY(30px)" },
+                            "100%": { opacity: "1", transform: "translateY(0)" },
+                        },
+                        fadeIn: {
+                            "0%": { opacity: "0" },
+                            "100%": { opacity: "1" },
+                        },
+                    },
+                    animation: {
+                        slideInUp: "slideInUp 0.8s ease-out",
+                        fadeIn: "fadeIn 0.8s ease-out",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        .auth-container {
+            background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1a0f2e 100%);
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(220,38,38,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
+        }
+
+        .auth-form {
+            position: relative;
+            z-index: 10;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+            border: 2px solid rgba(220, 38, 38, 0.3);
+            border-radius: 12px;
+            padding: 48px;
+            width: 100%;
+            max-width: 500px;
+            animation: slideInUp 0.8s ease-out;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #D1D5DB;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input {
+            width: 100%;
+            background-color: rgba(30, 41, 59, 0.6);
+            border: 2px solid rgba(220, 38, 38, 0.3);
+            color: white;
+            padding: 12px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #DC2626;
+            box-shadow: 0 0 10px rgba(220, 38, 38, 0.3);
+            background-color: rgba(30, 41, 59, 0.8);
+        }
+
+        .form-input::placeholder {
+            color: rgba(156, 163, 175, 0.7);
+        }
+
+        .form-input.error {
+            border-color: #EF4444;
+            background-color: rgba(239, 68, 68, 0.1);
+        }
+
+        .error-message {
+            color: #FCA5A5;
+            font-size: 0.75rem;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            height: 4px;
+            background-color: #374151;
+            border-radius: 2px;
+            overflow: hidden;
+            display: none;
+        }
+
+        .password-strength.show {
+            display: block;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .password-strength-bar.weak {
+            width: 33%;
+            background-color: #EF4444;
+        }
+
+        .password-strength-bar.medium {
+            width: 66%;
+            background-color: #F59E0B;
+        }
+
+        .password-strength-bar.strong {
+            width: 100%;
+            background-color: #10B981;
+        }
+
+        .password-strength-text {
+            font-size: 0.75rem;
+            margin-top: 4px;
+            color: #9CA3AF;
+        }
+
+        .password-strength-text.weak {
+            color: #EF4444;
+        }
+
+        .password-strength-text.medium {
+            color: #F59E0B;
+        }
+
+        .password-strength-text.strong {
+            color: #10B981;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .checkbox-input {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            margin-top: 2px;
+            cursor: pointer;
+            accent-color: #DC2626;
+        }
+
+        .checkbox-label {
+            color: #D1D5DB;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            cursor: pointer;
+        }
+
+        .checkbox-label a {
+            color: #DC2626;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .checkbox-label a:hover {
+            color: #991b1b;
+            text-decoration: underline;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background-color: #DC2626;
+            color: white;
+            font-weight: bold;
+            padding: 12px 32px;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 1rem;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background-color: white;
+            color: #DC2626;
+            border-color: #DC2626;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(220, 38, 38, 0.3);
+        }
+
+        .submit-btn:disabled {
+            background-color: #6B7280;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 24px;
+            color: #D1D5DB;
+            font-size: 0.875rem;
+        }
+
+        .form-footer a {
+            color: #DC2626;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .form-footer a:hover {
+            color: #991b1b;
+            text-decoration: underline;
+        }
+
+        .success-message {
+            display: none;
+            background-color: rgba(34, 197, 94, 0.15);
+            border: 2px solid #22C55E;
+            color: #86EFAC;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 24px;
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .requirements {
+            background-color: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: #D1D5DB;
+        }
+
+        .requirement {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+            transition: color 0.3s ease;
+        }
+
+        .requirement:last-child {
+            margin-bottom: 0;
+        }
+
+        .requirement-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: rgba(220, 38, 38, 0.2);
+            color: #DC2626;
+            margin-right: 8px;
+            font-size: 0.625rem;
+            font-weight: bold;
+        }
+
+        .requirement.met {
+            color: #10B981;
+        }
+
+        .requirement.met .requirement-icon {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #10B981;
+        }
+
+        .logo-link {
+            text-align: center;
+            margin-bottom: 32px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .logo-link a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .logo-text {
+            font-family: "Russo One", sans-serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+        }
+
+        .logo-text:hover {
+            color: #DC2626;
+        }
+
+        .logo-text .highlight {
+            color: #DC2626;
+        }
+    </style>
+    <script>
+        function validateForm(e) {
+            e.preventDefault();
+
+            const firstname = document.getElementById('firstname').value.trim();
+            const lastname = document.getElementById('lastname').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const termsAccepted = document.getElementById('terms').checked;
+
+            let isValid = true;
+
+            // Réinitialiser les messages d'erreur
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('.form-input').forEach(el => el.classList.remove('error'));
+
+            // Validation du prénom
+            if (!firstname) {
+                showError('firstnameError', 'Veuillez entrer votre prénom');
+                document.getElementById('firstname').classList.add('error');
+                isValid = false;
+            } else if (firstname.length < 2) {
+                showError('firstnameError', 'Le prénom doit contenir au moins 2 caractères');
+                document.getElementById('firstname').classList.add('error');
+                isValid = false;
+            }
+
+            // Validation du nom
+            if (!lastname) {
+                showError('lastnameError', 'Veuillez entrer votre nom');
+                document.getElementById('lastname').classList.add('error');
+                isValid = false;
+            } else if (lastname.length < 2) {
+                showError('lastnameError', 'Le nom doit contenir au moins 2 caractères');
+                document.getElementById('lastname').classList.add('error');
+                isValid = false;
+            }
+
+            // Validation de l'email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email) {
+                showError('emailError', 'Veuillez entrer votre email');
+                document.getElementById('email').classList.add('error');
+                isValid = false;
+            } else if (!emailRegex.test(email)) {
+                showError('emailError', 'Veuillez entrer un email valide');
+                document.getElementById('email').classList.add('error');
+                isValid = false;
+            }
+
+            // Validation du mot de passe
+            if (!password) {
+                showError('passwordError', 'Veuillez entrer un mot de passe');
+                document.getElementById('password').classList.add('error');
+                isValid = false;
+            } else if (password.length < 8) {
+                showError('passwordError', 'Le mot de passe doit contenir au moins 8 caractères');
+                document.getElementById('password').classList.add('error');
+                isValid = false;
+            }
+
+            // Validation de la confirmation du mot de passe
+            if (!confirmPassword) {
+                showError('confirmPasswordError', 'Veuillez confirmer votre mot de passe');
+                document.getElementById('confirmPassword').classList.add('error');
+                isValid = false;
+            } else if (confirmPassword !== password) {
+                showError('confirmPasswordError', 'Les mots de passe ne correspondent pas');
+                document.getElementById('confirmPassword').classList.add('error');
+                isValid = false;
+            }
+
+            // Validation des conditions
+            if (!termsAccepted) {
+                showError('termsError', 'Vous devez accepter les conditions d\'utilisation');
+                isValid = false;
+            }
+
+            if (isValid) {
+                showSuccessMessage();
+                document.getElementById('signupForm').reset();
+            }
+        }
+
+        function showError(elementId, message) {
+            const errorEl = document.getElementById(elementId);
+            if (errorEl) {
+                errorEl.textContent = message;
+                errorEl.classList.add('show');
+            }
+        }
+
+        function showSuccessMessage() {
+            const successEl = document.getElementById('successMessage');
+            successEl.classList.add('show');
+
+            setTimeout(() => {
+                successEl.classList.remove('show');
+                // Simulation d'une redirection après 2 secondes
+                console.log('Inscription réussie ! Redirection...');
+            }, 3000);
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('password').value;
+            const strengthBar = document.querySelector('.password-strength-bar');
+            const strengthText = document.querySelector('.password-strength-text');
+            const strengthContainer = document.querySelector('.password-strength');
+
+            if (!password) {
+                strengthContainer.classList.remove('show');
+                return;
+            }
+
+            strengthContainer.classList.add('show');
+
+            let strength = 0;
+
+            // Critères de force
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            strengthBar.classList.remove('weak', 'medium', 'strong');
+            strengthText.classList.remove('weak', 'medium', 'strong');
+
+            if (strength <= 2) {
+                strengthBar.classList.add('weak');
+                strengthText.classList.add('weak');
+                strengthText.textContent = 'Mot de passe faible';
+            } else if (strength <= 3) {
+                strengthBar.classList.add('medium');
+                strengthText.classList.add('medium');
+                strengthText.textContent = 'Mot de passe moyen';
+            } else {
+                strengthBar.classList.add('strong');
+                strengthText.classList.add('strong');
+                strengthText.textContent = 'Mot de passe fort';
+            }
+
+            updatePasswordRequirements(password);
+        }
+
+        function updatePasswordRequirements(password) {
+            const requirements = [
+                { id: 'req-length', text: 'Au moins 8 caractères', regex: /.{8,}/ },
+                { id: 'req-uppercase', text: 'Au moins une majuscule', regex: /[A-Z]/ },
+                { id: 'req-number', text: 'Au moins un chiffre', regex: /[0-9]/ },
+                { id: 'req-special', text: 'Au moins un caractère spécial', regex: /[^A-Za-z0-9]/ }
+            ];
+
+            requirements.forEach(req => {
+                const element = document.getElementById(req.id);
+                if (req.regex.test(password)) {
+                    element.classList.add('met');
+                } else {
+                    element.classList.remove('met');
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('password').addEventListener('input', checkPasswordStrength);
+        });
+    </script>
+</head>
+
+<body class="bg-shonen-dark text-white font-body">
+    <nav class="bg-shonen-black border-b border-shonen-red sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between h-20 items-center">
+                <div class="cursor-pointer">
+                    <a href="index.html">
+                        <span
+                            class="font-headings text-2xl tracking-wider text-white hover:text-shonen-red transition-colors">
+                            SHONEN
+                            <span class="text-shonen-red">
+                                SHELF
+                            </span>
+                        </span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-6 text-sm font-bold uppercase tracking-wide">
+                    <button class="hover:text-shonen-red transition-colors"><a href="index.html">Accueil</a>
+                    </button>
+                    <button class="hover:text-shonen-red transition-colors"><a href="catalogue.html">Catalogue</a>
+                    </button>
+                    <button class="hover:text-shonen-red transition-colors"><a href="a-propos.html">À propos</a>
+                    </button>
+                    <button class="hover:text-shonen-red transition-colors"><a href="equipe.html">L'équipe</a>
+                    </button>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-300 hover:text-white flex items-center gap-2 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                        <span class="hidden sm:inline text-xs"><a href="connexion.html">Connexion</a></span>
+                    </button>
+                    <button class="bg-shonen-red hover:bg-red-700 text-white p-2 rounded-sm transition-colors relative">
+                        <a href="catalogue.html">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
+                                </path>
+                            </svg>
+                        </a>
+                        <span
+                            class="absolute -top-2 -right-2 bg-white text-shonen-red text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="auth-container">
+        <div class="auth-form">
+            <div class="logo-link">
+                <a href="index.html">
+                    <div class="text-center">
+                        <span class="text-2xl font-headings tracking-wider">
+                            SHONEN
+                            <span class="highlight">SHELF</span>
+                        </span>
+                    </div>
+                </a>
+            </div>
+
+            <h1 class="text-3xl font-headings text-white text-center mb-4 uppercase">Créer un compte</h1>
+            <p class="text-gray-400 text-center mb-8">Rejoignez notre communauté de passionnés</p>
+
+            <div id="successMessage" class="success-message">
+                ✓ Inscription réussie ! Bienvenue chez Shonen Shelf. Vous allez être redirigé...
+            </div>
+
+            <form id="signupForm" onsubmit="validateForm(event)">
+                <!-- Prénom -->
+                <div class="form-group">
+                    <label for="firstname" class="form-label">Prénom</label>
+                    <input type="text" id="firstname" name="firstname" class="form-input" placeholder="John"
+                        autocomplete="given-name">
+                    <div id="firstnameError" class="error-message"></div>
+                </div>
+
+                <!-- Nom -->
+                <div class="form-group">
+                    <label for="lastname" class="form-label">Nom</label>
+                    <input type="text" id="lastname" name="lastname" class="form-input" placeholder="Doe"
+                        autocomplete="family-name">
+                    <div id="lastnameError" class="error-message"></div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="vous@email.com"
+                        autocomplete="email">
+                    <div id="emailError" class="error-message"></div>
+                </div>
+
+                <!-- Mot de passe -->
+                <div class="form-group">
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <input type="password" id="password" name="password" class="form-input"
+                        placeholder="Entrez un mot de passe sécurisé" autocomplete="new-password">
+                    <div class="password-strength">
+                        <div class="password-strength-bar"></div>
+                        <div class="password-strength-text"></div>
+                    </div>
+                    <div class="requirements">
+                        <div class="requirement" id="req-length">
+                            <span class="requirement-icon">✓</span>
+                            <span>Au moins 8 caractères</span>
+                        </div>
+                        <div class="requirement" id="req-uppercase">
+                            <span class="requirement-icon">✓</span>
+                            <span>Au moins une majuscule</span>
+                        </div>
+                        <div class="requirement" id="req-number">
+                            <span class="requirement-icon">✓</span>
+                            <span>Au moins un chiffre</span>
+                        </div>
+                        <div class="requirement" id="req-special">
+                            <span class="requirement-icon">✓</span>
+                            <span>Au moins un caractère spécial</span>
+                        </div>
+                    </div>
+                    <div id="passwordError" class="error-message"></div>
+                </div>
+
+                <!-- Confirmation du mot de passe -->
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Confirmer le mot de passe</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-input"
+                        placeholder="Confirmez votre mot de passe" autocomplete="new-password">
+                    <div id="confirmPasswordError" class="error-message"></div>
+                </div>
+
+                <!-- Conditions d'utilisation -->
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" class="checkbox-input">
+                    <label for="terms" class="checkbox-label">
+                        J'accepte les <a href="conditions.html">conditions d'utilisation</a> et la <a
+                            href="confidentialite.html">politique de confidentialité</a>
+                    </label>
+                </div>
+                <div id="termsError" class="error-message"></div>
+
+                <!-- Newsletter -->
+                <div class="checkbox-group">
+                    <input type="checkbox" id="newsletter" name="newsletter" class="checkbox-input" checked>
+                    <label for="newsletter" class="checkbox-label">
+                        Je souhaite recevoir les actualités et offres exclusives de Shonen Shelf
+                    </label>
+                </div>
+
+                <!-- Bouton de soumission -->
+                <button type="submit" class="submit-btn">
+                    Créer mon compte
+                </button>
+            </form>
+
+            <!-- Lien de connexion -->
+            <div class="form-footer">
+                Vous avez déjà un compte ? <a href="connexion.html">Se connecter</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Panier -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-headings text-white uppercase">Votre Panier</h2>
+                <button onclick="closeCart()" class="text-gray-400 hover:text-white text-2xl font-bold">×</button>
+            </div>
+            <div id="cartItems" class="mb-4 max-h-96 overflow-y-auto"></div>
+            <div id="cartSummary" class="cart-summary"></div>
+        </div>
+    </div>
+
+    <footer class="bg-shonen-black py-8 text-center border-t border-gray-800 mt-auto">
+        <p class="text-gray-500 text-sm">
+            &copy; 2026 Shonen Shelf
+        </p>
+    </footer>
+    <script src="cart.js"></script>
+</body>
+
+</html>

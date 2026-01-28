@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Sélecteur de Quantité</title>
+    <link rel="stylesheet" href="cart-styles.css">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: white;
+            font-family: Roboto, sans-serif;
+            padding: 20px;
+        }
+
+        .test-card {
+            background-color: #1e293b;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #DC2626;
+            border-radius: 8px;
+            max-width: 400px;
+        }
+
+        .test-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #DC2626;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #f3f4f6;
+            border-radius: 6px;
+            padding: 4px 8px;
+            width: fit-content;
+        }
+
+        .quantity-btn-product {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #d1d5db;
+            background-color: white;
+            color: #DC2626;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-btn-product:hover {
+            background-color: #DC2626;
+            color: white;
+            border-color: #DC2626;
+        }
+
+        .product-quantity {
+            width: 40px;
+            text-align: center;
+            border: none;
+            background-color: transparent;
+            font-weight: bold;
+            font-size: 16px;
+            color: #1f2937;
+        }
+
+        .product-quantity:focus {
+            outline: none;
+        }
+
+        .success-message {
+            color: #22c55e;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Test du Sélecteur de Quantité</h1>
+
+    <div class="test-card">
+        <div class="test-title">Test 1: Sélecteur de Quantité</div>
+        <div data-product-id="test-1">
+            <div class="quantity-selector">
+                <button class="quantity-btn-product" onclick="testDecrease('test-1')">−</button>
+                <input type="number" class="product-quantity" value="1" min="1" max="99">
+                <button class="quantity-btn-product" onclick="testIncrease('test-1')">+</button>
+            </div>
+            <p>Valeur actuelle: <span id="current-value-1">1</span></p>
+            <button onclick="testAddToCart('test-1', 'Produit Test 1')"
+                style="background-color: #DC2626; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;">
+                Ajouter au panier (test)
+            </button>
+            <div id="result-1"></div>
+        </div>
+    </div>
+
+    <div class="test-card">
+        <div class="test-title">Vérifications:</div>
+        <ul>
+            <li>✓ Sélecteur de quantité visible sur les cartes produits</li>
+            <li>✓ Boutons + et - fonctionnels</li>
+            <li>✓ Minimum 1, Maximum 99</li>
+            <li>✓ Affichage de la quantité</li>
+            <li>✓ Réinitialisation après ajout au panier</li>
+        </ul>
+    </div>
+
+    <script>
+        function testIncrease(productId) {
+            const input = document.querySelector(`[data-product-id="${productId}"] .product-quantity`);
+            if (input) {
+                input.value = Math.min(parseInt(input.value) + 1, 99);
+                updateDisplay(productId);
+            }
+        }
+
+        function testDecrease(productId) {
+            const input = document.querySelector(`[data-product-id="${productId}"] .product-quantity`);
+            if (input) {
+                input.value = Math.max(parseInt(input.value) - 1, 1);
+                updateDisplay(productId);
+            }
+        }
+
+        function updateDisplay(productId) {
+            const input = document.querySelector(`[data-product-id="${productId}"] .product-quantity`);
+            document.querySelector(`#current-value-${productId.split('-')[1]}`).textContent = input.value;
+        }
+
+        function testAddToCart(productId, productName) {
+            const input = document.querySelector(`[data-product-id="${productId}"] .product-quantity`);
+            const quantity = parseInt(input.value);
+            const resultDiv = document.querySelector(`#result-${productId.split('-')[1]}`);
+
+            resultDiv.innerHTML = `<div class="success-message">✓ ${quantity}x ${productName} ajouté au panier (test)</div>`;
+
+            // Réinitialiser la quantité
+            input.value = 1;
+            updateDisplay(productId);
+        }
+    </script>
+</body>
+
+</html>
