@@ -37,6 +37,18 @@
         };
     </script>
     <style>
+        /* Animation d'apparition en cascade */
+        .team-member-card {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .team-member-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.7s cubic-bezier(.4, 2, .3, 1);
+        }
+
         .team-hero {
             background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1a0f2e 100%);
             position: relative;
@@ -158,6 +170,14 @@
         </div>
     </nav>
     <main class="flex-grow">
+        <!-- Modale bio membre -->
+        <div id="bioModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+            <div class="bg-shonen-gray rounded-lg shadow-lg max-w-md w-full relative animate-fade-in">
+                <button id="closeBioModal"
+                    class="absolute top-2 right-2 text-gray-400 hover:text-white text-2xl font-bold">×</button>
+                <div id="bioModalContent" class="p-6"></div>
+            </div>
+        </div>
         <div id="equipe" class="page-section">
             <!-- Hero Section -->
             <section class="team-hero py-20 px-4">
@@ -178,69 +198,120 @@
                     <h2 class="text-4xl font-headings text-shonen-red mb-12 text-center uppercase">Nos Talents</h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
                         <!-- Liam R. -->
-                        <div class="team-member-card p-6 rounded text-center">
-                            <div class="member-avatar">👨‍💼</div>
+                        <div class="team-member-card p-6 rounded text-center cursor-pointer" data-member="liam">
+                            <div class="member-avatar hover:scale-110 transition-transform duration-300 shadow-lg overflow-hidden p-0"
+                                style="background:none; box-shadow:none;">
+                                <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=facearea&w=256&h=256&facepad=2&q=80"
+                                    alt="Liam R."
+                                    class="w-28 h-28 object-cover rounded-full border-4 border-shonen-red mx-auto" />
+                            </div>
                             <h3 class="font-headings text-xl text-white mb-2">Liam R.</h3>
                             <p class="text-shonen-red font-bold mb-3">Directeur Général</p>
                             <p class="text-gray-400 text-sm mb-4">Visionnaire et leader charismatique</p>
                             <a href="pdf/fiches-poste/fiche-poste-lr.pdf"
-                                class="inline-block text-shonen-red hover:text-white transition-colors text-sm font-bold underline">
-                                Voir la fiche poste
-                            </a>
+                                class="inline-block text-shonen-red hover:text-white transition-colors text-sm font-bold underline">Voir
+                                la fiche poste</a>
                         </div>
-
                         <!-- Alexandre V. -->
-                        <div class="team-member-card p-6 rounded text-center">
-                            <div class="member-avatar">👨‍💻</div>
+                        <div class="team-member-card p-6 rounded text-center cursor-pointer" data-member="alexandre">
+                            <div class="member-avatar hover:scale-110 transition-transform duration-300 shadow-lg overflow-hidden p-0"
+                                style="background:none; box-shadow:none;">
+                                <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=facearea&w=256&h=256&facepad=2&q=80"
+                                    alt="Alexandre V."
+                                    class="w-28 h-28 object-cover rounded-full border-4 border-shonen-red mx-auto" />
+                            </div>
                             <h3 class="font-headings text-xl text-white mb-2">Alexandre V.</h3>
                             <p class="text-shonen-red font-bold mb-3">Directeur Technique</p>
                             <p class="text-gray-400 text-sm mb-4">Expert en infrastructure et innovation</p>
                             <a href="pdf/fiches-poste/fiche-poste-av.pdf"
-                                class="inline-block text-shonen-red hover:text-white transition-colors text-sm font-bold underline">
-                                Voir la fiche poste
-                            </a>
+                                class="inline-block text-shonen-red hover:text-white transition-colors text-sm font-bold underline">Voir
+                                la fiche poste</a>
                         </div>
-
                         <!-- Élodie D. -->
-                        <div class="team-member-card p-6 rounded text-center">
-                            <div class="member-avatar">👩‍💼</div>
+                        <div class="team-member-card p-6 rounded text-center cursor-pointer" data-member="elodie">
+                            <div class="member-avatar hover:scale-110 transition-transform duration-300 shadow-lg overflow-hidden p-0"
+                                style="background:none; box-shadow:none;">
+                                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=facearea&w=256&h=256&facepad=2&q=80"
+                                    alt="Élodie D."
+                                    class="w-28 h-28 object-cover rounded-full border-4 border-shonen-red mx-auto" />
+                            </div>
                             <h3 class="font-headings text-xl text-white mb-2">Élodie D.</h3>
                             <p class="text-shonen-red font-bold mb-3">Directrice Marketing</p>
                             <p class="text-gray-400 text-sm mb-4">Créatrice de stratégies innovantes</p>
                             <a href="pdf/fiches-poste/fiche-poste-ed.pdf"
-                                class="inline-block text-shonen-red hover:text-white transition-colors text-sm font-bold underline">
-                                Voir la fiche poste
-                            </a>
+                                class="inline-block text-shonen-red hover:text-white transition-colors text-sm font-bold underline">Voir
+                                la fiche poste</a>
                         </div>
-
                         <!-- Émile P. -->
-                        <div class="team-member-card p-6 rounded text-center">
-                            <div class="member-avatar">👨‍📦</div>
+                        <div class="team-member-card p-6 rounded text-center cursor-pointer" data-member="emile">
+                            <div class="member-avatar hover:scale-110 transition-transform duration-300 shadow-lg overflow-hidden p-0"
+                                style="background:none; box-shadow:none;">
+                                <img src="images/equipe/charlie-green-3JmfENcL24M-unsplash.jpg"
+                                    class="w-28 h-28 object-cover rounded-full border-4 border-shonen-red mx-auto" />
+                            </div>
                             <h3 class="font-headings text-xl text-white mb-2">Émile P.</h3>
                             <p class="text-shonen-red font-bold mb-3">Responsable Logistique</p>
                             <p class="text-gray-400 text-sm mb-4">Garant de la livraison parfaite</p>
                             <a href="pdf/fiches-poste/fiche-poste-ep.pdf"
-                                class="inline-block text-shonen-red hover:text-white transition-colors text-sm font-bold underline">
-                                Voir la fiche poste
-                            </a>
+                                class="inline-block text-shonen-red hover:text-white transition-colors text-sm font-bold underline">Voir
+                                la fiche poste</a>
                         </div>
-
                         <!-- Clara B. -->
-                        <div class="team-member-card p-6 rounded text-center">
-                            <div class="member-avatar">👩‍💻</div>
+                        <div class="team-member-card p-6 rounded text-center cursor-pointer" data-member="clara">
+                            <div class="member-avatar hover:scale-110 transition-transform duration-300 shadow-lg overflow-hidden p-0"
+                                style="background:none; box-shadow:none;">
+                                <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=facearea&w=256&h=256&facepad=2&q=80"
+                                    alt="Clara B."
+                                    class="w-28 h-28 object-cover rounded-full border-4 border-shonen-red mx-auto" />
+                            </div>
                             <h3 class="font-headings text-xl text-white mb-2">Clara B.</h3>
                             <p class="text-shonen-red font-bold mb-3">Responsable Client</p>
                             <p class="text-gray-400 text-sm mb-4">À votre écoute et votre service</p>
                             <a href="pdf/fiches-poste/fiche-poste-cb.pdf"
-                                class="inline-block text-shonen-red hover:text-white transition-colors text-sm font-bold underline">
-                                Voir la fiche poste
-                            </a>
+                                class="inline-block text-shonen-red hover:text-white transition-colors text-sm font-bold underline">Voir
+                                la fiche poste</a>
                         </div>
                     </div>
                 </div>
             </section>
 
             <!-- Organigramme Section -->
+
+            <!-- Timeline Notre histoire -->
+            <section class="py-16 bg-shonen-gray border-t border-shonen-red/30">
+                <div class="max-w-4xl mx-auto px-4">
+                    <h2 class="text-3xl font-headings text-shonen-red mb-10 text-center uppercase">Notre histoire</h2>
+                    <ol class="relative border-l-4 border-shonen-red ml-4">
+                        <li class="mb-10 ml-6">
+                            <span
+                                class="absolute flex items-center justify-center w-8 h-8 bg-shonen-red rounded-full -left-4 ring-4 ring-shonen-gray">📅</span>
+                            <h3 class="font-bold text-lg text-white">2021 - Création de Shonen Shelf</h3>
+                            <p class="text-gray-300">Lancement de la plateforme par une équipe de passionnés de manga et
+                                BD.</p>
+                        </li>
+                        <li class="mb-10 ml-6">
+                            <span
+                                class="absolute flex items-center justify-center w-8 h-8 bg-shonen-red rounded-full -left-4 ring-4 ring-shonen-gray">🚀</span>
+                            <h3 class="font-bold text-lg text-white">2022 - 1ère version en ligne</h3>
+                            <p class="text-gray-300">Premiers clients, premiers retours, premières évolutions !</p>
+                        </li>
+                        <li class="mb-10 ml-6">
+                            <span
+                                class="absolute flex items-center justify-center w-8 h-8 bg-shonen-red rounded-full -left-4 ring-4 ring-shonen-gray">🏆</span>
+                            <h3 class="font-bold text-lg text-white">2023 - Prix de l'innovation</h3>
+                            <p class="text-gray-300">Récompense pour l'expérience utilisateur et la diversité du
+                                catalogue.</p>
+                        </li>
+                        <li class="ml-6">
+                            <span
+                                class="absolute flex items-center justify-center w-8 h-8 bg-shonen-red rounded-full -left-4 ring-4 ring-shonen-gray">🌟</span>
+                            <h3 class="font-bold text-lg text-white">2026 - Communauté grandissante</h3>
+                            <p class="text-gray-300">Des milliers de membres, une équipe qui s'agrandit, et toujours la
+                                même passion !</p>
+                        </li>
+                    </ol>
+                </div>
+            </section>
             <section class="py-16 bg-shonen-black border-t border-shonen-gray">
                 <div class="max-w-5xl mx-auto px-4">
                     <h2 class="text-4xl font-headings text-shonen-red mb-12 text-center uppercase">Structure
@@ -308,6 +379,16 @@
                 </div>
             </section>
         </div>
+
+        <!-- Citation inspirante -->
+        <section class="py-12 bg-shonen-gray border-t border-shonen-red/30">
+            <div class="max-w-3xl mx-auto text-center">
+                <blockquote class="text-2xl italic text-gray-200 mb-4">« Seul on va plus vite, ensemble on va plus loin.
+                    »</blockquote>
+                <span class="text-shonen-red font-bold text-lg">— L'équipe Shonen Shelf</span>
+            </div>
+        </section>
+        </div>
     </main>
 
     <!-- Modal Panier -->
@@ -322,12 +403,174 @@
         </div>
     </div>
 
-    <footer class="bg-shonen-black py-8 text-center border-t border-gray-800 mt-auto">
-        <p class="text-gray-500 text-sm">
-            &copy; 2026 Shonen Shelf
-        </p>
+    <footer class="bg-shonen-black py-10 border-t border-gray-800 mt-auto">
+        <!-- Carrousel témoignages équipe -->
+        <section class="bg-shonen-dark py-12 border-t border-shonen-red/30">
+            <div class="max-w-4xl mx-auto px-4">
+                <h2 class="text-2xl font-headings text-shonen-red mb-8 text-center uppercase">Témoignages de l'équipe
+                </h2>
+                <div id="testimonialCarousel" class="relative">
+                    <div class="testimonial-slide text-center">
+                        <p class="text-lg text-gray-200 italic mb-4">“Travailler chez Shonen Shelf, c'est partager
+                            chaque jour notre passion avec la communauté.”</p>
+                        <span class="text-shonen-red font-bold">— Liam R.</span>
+                    </div>
+                    <div class="testimonial-slide text-center hidden">
+                        <p class="text-lg text-gray-200 italic mb-4">“L'innovation et l'entraide sont au cœur de notre
+                            équipe, c'est ce qui fait notre force.”</p>
+                        <span class="text-shonen-red font-bold">— Alexandre V.</span>
+                    </div>
+                    <div class="testimonial-slide text-center hidden">
+                        <p class="text-lg text-gray-200 italic mb-4">“Voir nos idées prendre vie et satisfaire nos
+                            clients, c'est une vraie fierté.”</p>
+                        <span class="text-shonen-red font-bold">— Élodie D.</span>
+                    </div>
+                    <div class="testimonial-slide text-center hidden">
+                        <p class="text-lg text-gray-200 italic mb-4">“L'esprit d'équipe et la bonne humeur sont toujours
+                            au rendez-vous !”</p>
+                        <span class="text-shonen-red font-bold">— Émile P.</span>
+                    </div>
+                    <div class="testimonial-slide text-center hidden">
+                        <p class="text-lg text-gray-200 italic mb-4">“Être à l'écoute des clients et de l'équipe, c'est
+                            la clé de notre succès.”</p>
+                        <span class="text-shonen-red font-bold">— Clara B.</span>
+                    </div>
+                    <button id="prevTestimonial"
+                        class="absolute left-0 top-1/2 -translate-y-1/2 bg-shonen-red text-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg hover:bg-white hover:text-shonen-red transition-all">‹</button>
+                    <button id="nextTestimonial"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 bg-shonen-red text-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg hover:bg-white hover:text-shonen-red transition-all">›</button>
+                </div>
+            </div>
+        </section>
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="mb-4 md:mb-0">
+                <span class="font-headings text-xl text-white">Shonen <span class="text-shonen-red">Shelf</span></span>
+                <p class="text-gray-500 text-xs mt-2">&copy; <span id="year"></span> Shonen Shelf. Tous droits réservés.
+                </p>
+            </div>
+            <div class="flex flex-col md:flex-row gap-4 items-center">
+                <a href="index.html" class="text-gray-400 hover:text-shonen-red text-xs">Accueil</a>
+                <a href="catalogue.html" class="text-gray-400 hover:text-shonen-red text-xs">Catalogue</a>
+                <a href="a-propos.html" class="text-gray-400 hover:text-shonen-red text-xs">À propos</a>
+                <a href="contact.html" class="text-gray-400 hover:text-shonen-red text-xs">Contact</a>
+            </div>
+            <div class="flex gap-3 items-center">
+                <a href="#" class="text-gray-400 hover:text-shonen-red" title="Instagram"><svg class="w-5 h-5"
+                        fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5zm4.25 2.25a6 6 0 1 1 0 12 6 6 0 0 1 0-12zm0 1.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm6.25 1.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                    </svg></a>
+                <a href="#" class="text-gray-400 hover:text-shonen-red" title="Twitter"><svg class="w-5 h-5"
+                        fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M22.46 6c-.77.35-1.6.59-2.47.7a4.3 4.3 0 0 0 1.88-2.37 8.59 8.59 0 0 1-2.72 1.04A4.28 4.28 0 0 0 16.11 4c-2.37 0-4.29 1.92-4.29 4.29 0 .34.04.67.1.99A12.13 12.13 0 0 1 3.1 5.1a4.28 4.28 0 0 0 1.33 5.72c-.7-.02-1.36-.21-1.94-.53v.05c0 2.1 1.5 3.85 3.5 4.25-.36.1-.74.16-1.13.16-.28 0-.54-.03-.8-.08.54 1.7 2.1 2.94 3.95 2.97A8.6 8.6 0 0 1 2 19.54a12.13 12.13 0 0 0 6.56 1.92c7.88 0 12.2-6.53 12.2-12.2 0-.19 0-.37-.01-.56A8.7 8.7 0 0 0 24 4.59a8.5 8.5 0 0 1-2.54.7z" />
+                    </svg></a>
+                <a href="#" class="text-gray-400 hover:text-shonen-red" title="Facebook"><svg class="w-5 h-5"
+                        fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M17.525 8.998h-2.02V7.797c0-.49.32-.604.545-.604h1.45V4.998h-1.99c-2.2 0-2.71 1.65-2.71 2.71v1.29h-1.36v2.29h1.36v6.71h2.7v-6.71h1.82l.18-2.29z" />
+                    </svg></a>
+            </div>
+        </div>
     </footer>
+    <script>
+        // Footer année dynamique
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+    </script>
     <script src="cart.js"></script>
+    <script>
+        // Animation d'apparition en cascade des membres
+        document.addEventListener('DOMContentLoaded', function () {
+            const cards = document.querySelectorAll('.team-member-card');
+            cards.forEach((card, i) => {
+                setTimeout(() => card.classList.add('visible'), 200 + i * 180);
+            });
+        });
+
+        // Modale bio membre
+        const bioData = {
+            liam: {
+                photo: 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=facearea&w=256&h=256&facepad=2&q=80',
+                nom: 'Liam R.',
+                poste: 'Directeur Général',
+                bio: "Fondateur de Shonen Shelf, Liam insuffle sa vision et son énergie à toute l'équipe. Il aime les shonens classiques et les nouveaux talents du manga.",
+            },
+            alexandre: {
+                photo: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=facearea&w=256&h=256&facepad=2&q=80',
+                nom: 'Alexandre V.',
+                poste: 'Directeur Technique',
+                bio: "Architecte de la plateforme, Alexandre veille à l'innovation et à la robustesse technique. Fan de comics et de science-fiction.",
+            },
+            elodie: {
+                photo: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=facearea&w=256&h=256&facepad=2&q=80',
+                nom: 'Élodie D.',
+                poste: 'Directrice Marketing',
+                bio: "Élodie imagine les campagnes et la communication. Elle adore les univers colorés et les histoires inspirantes.",
+            },
+            emile: {
+                photo: 'images/equipe/charlie-green-3JmfENcL24M-unsplash.jpg',
+                nom: 'Émile P.',
+                poste: 'Responsable Logistique',
+                bio: "Maître de la logistique, Émile garantit la rapidité et la qualité des livraisons. Il collectionne les BD franco-belges.",
+            },
+            clara: {
+                photo: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=facearea&w=256&h=256&facepad=2&q=80',
+                nom: 'Clara B.',
+                poste: 'Responsable Client',
+                bio: "Clara est la voix de nos clients. Toujours à l'écoute, elle veille à la satisfaction de tous. Grande lectrice de webtoons et de shojo.",
+            },
+        };
+        const bioModal = document.getElementById('bioModal');
+        const bioModalContent = document.getElementById('bioModalContent');
+        const closeBioModalBtn = document.getElementById('closeBioModal');
+        document.querySelectorAll('.team-member-card').forEach(card => {
+            card.addEventListener('click', function (e) {
+                // Ne pas ouvrir la modale si clic sur le lien fiche poste
+                if (e.target.tagName === 'A') return;
+                const key = card.getAttribute('data-member');
+                const data = bioData[key];
+                if (!data) return;
+                bioModalContent.innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <img src="${data.photo}" alt="${data.nom}" class="w-32 h-32 object-cover rounded-full border-4 border-shonen-red mb-2" />
+                        <h2 class="font-headings text-2xl text-white mb-1">${data.nom}</h2>
+                        <div class="text-shonen-red font-bold mb-2">${data.poste}</div>
+                        <div class="text-gray-300 text-center mb-4">${data.bio}</div>
+                    </div>
+                `;
+                bioModal.classList.remove('hidden');
+                bioModal.classList.add('flex');
+            });
+        });
+        function closeBioModal() {
+            bioModal.classList.add('hidden');
+            bioModal.classList.remove('flex');
+        }
+        closeBioModalBtn.addEventListener('click', closeBioModal);
+        bioModal.addEventListener('click', function (e) {
+            if (e.target === bioModal) closeBioModal();
+        });
+
+        // Carrousel témoignages équipe
+        (function () {
+            const slides = document.querySelectorAll('#testimonialCarousel .testimonial-slide');
+            let idx = 0;
+            function showSlide(i) {
+                slides.forEach((s, j) => s.classList.toggle('hidden', j !== i));
+            }
+            document.getElementById('prevTestimonial').onclick = function () {
+                idx = (idx - 1 + slides.length) % slides.length;
+                showSlide(idx);
+            };
+            document.getElementById('nextTestimonial').onclick = function () {
+                idx = (idx + 1) % slides.length;
+                showSlide(idx);
+            };
+            showSlide(idx);
+        })();
+    </script>
 </body>
 
 </html>

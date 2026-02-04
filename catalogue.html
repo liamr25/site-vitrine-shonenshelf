@@ -40,8 +40,6 @@
     <style>
         .filter-btn {
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
             cursor: pointer;
         }
 
@@ -93,27 +91,6 @@
             }
         }
     </style>
-    <script>
-        function filterProducts(category) {
-            // Mettre à jour les boutons de filtre
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                if (btn.dataset.category === category) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
-
-            // Filtrer les produits
-            document.querySelectorAll('.product-card').forEach(card => {
-                if (category === 'all' || card.dataset.category === category) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
-        }
-    </script>
 </head>
 
 <body class="bg-shonen-dark text-white font-body min-h-screen flex flex-col">
@@ -170,407 +147,75 @@
         </div>
     </nav>
     <main class="flex-grow">
-        <div id="catalogue" class="page-section">
-            <div class="max-w-7xl mx-auto px-4 py-12">
-                <h2 class="text-4xl font-headings text-shonen-red mb-8 uppercase border-b border-gray-700 pb-4">
-                    Le Catalogue
-                </h2>
-
-
-                <div class="flex flex-wrap gap-4 mb-8">
-                    <button class="filter-btn active bg-shonen-red text-white px-4 py-2 rounded font-bold text-sm"
-                        aria-label="Afficher tous les produits" data-category="all" onclick="filterProducts('all')">
-                        TOUT
-                    </button>
-                    <button
-                        class="filter-btn bg-shonen-gray hover:bg-gray-600 text-white px-4 py-2 rounded font-bold text-sm"
-                        aria-label="Filtrer par mangas" data-category="manga" onclick="filterProducts('manga')">
-                        Manga
-                    </button>
-                    <button
-                        class="filter-btn bg-shonen-gray hover:bg-gray-600 text-white px-4 py-2 rounded font-bold text-sm"
-                        aria-label="Filtrer par comics" data-category="comics" onclick="filterProducts('comics')">
-                        Comics
-                    </button>
-                    <button
-                        class="filter-btn bg-shonen-gray hover:bg-gray-600 text-white px-4 py-2 rounded font-bold text-sm"
-                        aria-label="Filtrer par bandes dessinées" data-category="bd" onclick="filterProducts('bd')">
-                        BD
-                    </button>
+        <!-- Modal Vue Détail Produit -->
+        <div id="productDetailModal"
+            class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden">
+            <div class="bg-shonen-gray rounded-lg shadow-lg max-w-md w-full relative animate-fade-in">
+                <button id="closeProductModal"
+                    class="absolute top-2 right-2 text-gray-400 hover:text-white text-2xl font-bold">×</button>
+                <div id="productDetailContent" class="p-6"></div>
+            </div>
+        </div>
+        <!-- Hero catalogue -->
+        <section class="relative bg-shonen-black h-64 flex items-center justify-center mb-8 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80"
+                alt="Catalogue visuel"
+                class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none select-none">
+            <div class="relative z-10 text-center">
+                <h1 class="text-5xl font-headings text-white mb-2 drop-shadow-lg">Le Catalogue</h1>
+                <p class="text-lg text-gray-300 mb-2">Découvrez toutes nos références manga, comics et BD</p>
+            </div>
+        </section>
+        <section class="max-w-7xl mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+                <div class="flex flex-wrap gap-4" id="filterButtons">
+                    <button class="filter-btn active bg-shonen-red px-4 py-2 rounded font-bold"
+                        data-category="all">TOUT</button>
+                    <button class="filter-btn bg-shonen-gray px-4 py-2 rounded font-bold"
+                        data-category="manga">Manga</button>
+                    <button class="filter-btn bg-shonen-gray px-4 py-2 rounded font-bold"
+                        data-category="comics">Comics</button>
+                    <button class="filter-btn bg-shonen-gray px-4 py-2 rounded font-bold" data-category="bd">BD</button>
                 </div>
-
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-                    <div data-category="manga" data-product-id="one-piece-100"
-                        class="product-card bg-shonen-gray group hover:shadow-[0_0_20px_rgba(220,38,38,0.4)] transition-all duration-300 border border-shonen-gray hover:border-shonen-red">
-                        <div class="h-64 overflow-hidden bg-black relative">
-                            <span
-                                class="absolute top-2 left-2 bg-shonen-red text-white text-xs font-bold px-2 py-1 z-10">NOUVEAU</span>
-                            <img src="images/one-piece-vol100.jpg" alt="One Piece Volume 100"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg mb-1 text-white">One Piece Vol. 100</h3>
-                            <p class="text-gray-400 text-sm mb-3">Eiichiro Oda</p>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-shonen-red font-bold text-xl">6.90 €</span>
-                            </div>
-                            <div class="product-controls">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn-product"
-                                        onclick="decreaseProductQuantity('one-piece-100')">−</button>
-                                    <input type="number" class="product-quantity" value="1" min="1" max="99">
-                                    <button class="quantity-btn-product"
-                                        onclick="increaseProductQuantity('one-piece-100')">+</button>
-                                </div>
-                                <button
-                                    class="flex-1 text-sm border border-gray-600 hover:border-shonen-red hover:bg-shonen-red px-3 py-1 rounded transition-colors add-to-cart-btn"
-                                    aria-label="Ajouter One Piece Vol. 100 au panier"
-                                    onclick="addToCart('one-piece-100', 'One Piece Vol. 100', 6.90)">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-gray-400 text-sm">Trier par :</span>
+                    <select id="sortSelect"
+                        class="bg-shonen-gray text-white rounded px-2 py-1 text-sm focus:outline-none border border-shonen-red">
+                        <option value="default">Défaut</option>
+                        <option value="price-asc">Prix croissant</option>
+                        <option value="price-desc">Prix décroissant</option>
+                        <option value="name-asc">Nom A-Z</option>
+                        <option value="name-desc">Nom Z-A</option>
+                    </select>
+                </div>
+                <div class="text-gray-400 text-sm"><span id="productCount">0</span> produits affichés</div>
+            </div>
+            <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"></div>
+        </section>
+        <!-- Section Avis clients -->
+        <section class="py-16 bg-shonen-black border-t border-shonen-gray">
+            <div class="max-w-5xl mx-auto px-4">
+                <h2 class="text-3xl font-headings text-shonen-red mb-10 text-center uppercase">Avis clients</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-shonen-gray p-6 rounded-lg shadow flex flex-col items-center">
+                        <div class="text-shonen-red text-3xl mb-2">★ ★ ★ ★ ★</div>
+                        <p class="text-gray-300 text-sm mb-3">"Catalogue varié, j'ai trouvé tous mes mangas préférés !"
+                        </p>
+                        <span class="text-shonen-red font-bold text-xs">- Léo</span>
                     </div>
-                    <div data-category="comics" data-product-id="batman-year-one"
-                        class="product-card bg-shonen-gray group hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all duration-300 border border-shonen-gray hover:border-blue-500">
-                        <div class="h-64 overflow-hidden bg-black relative">
-                            <img src="images/batman-year-one.jpg" alt="Batman: Year One"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg mb-1 text-white">Batman: Year One</h3>
-                            <p class="text-gray-400 text-sm mb-3">Frank Miller</p>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-shonen-red font-bold text-xl">15.00 €</span>
-                            </div>
-                            <div class="product-controls">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn-product"
-                                        onclick="decreaseProductQuantity('batman-year-one')">−</button>
-                                    <input type="number" class="product-quantity" value="1" min="1" max="99">
-                                    <button class="quantity-btn-product"
-                                        onclick="increaseProductQuantity('batman-year-one')">+</button>
-                                </div>
-                                <button
-                                    class="flex-1 text-sm border border-gray-600 hover:border-blue-500 hover:bg-blue-600 px-3 py-1 rounded transition-colors add-to-cart-btn"
-                                    aria-label="Ajouter Batman: Year One au panier"
-                                    onclick="addToCart('batman-year-one', 'Batman: Year One', 15.00)">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
+                    <div class="bg-shonen-gray p-6 rounded-lg shadow flex flex-col items-center">
+                        <div class="text-shonen-red text-3xl mb-2">★ ★ ★ ★ ★</div>
+                        <p class="text-gray-300 text-sm mb-3">"Interface agréable et filtres très pratiques."</p>
+                        <span class="text-shonen-red font-bold text-xs">- Emma</span>
                     </div>
-                    <div data-category="manga" data-product-id="naruto-50"
-                        class="product-card bg-shonen-gray group hover:shadow-[0_0_20px_rgba(220,38,38,0.4)] transition-all duration-300 border border-shonen-gray hover:border-shonen-red">
-                        <div class="h-64 overflow-hidden bg-black relative">
-                            <img src="images/naruto-vol50.jpg" alt="Naruto Volume 50"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg mb-1 text-white">Naruto Vol. 50</h3>
-                            <p class="text-gray-400 text-sm mb-3">Masashi Kishimoto</p>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-shonen-red font-bold text-xl">6.90 €</span>
-                            </div>
-                            <div class="product-controls">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn-product"
-                                        onclick="decreaseProductQuantity('naruto-50')">−</button>
-                                    <input type="number" class="product-quantity" value="1" min="1" max="99">
-                                    <button class="quantity-btn-product"
-                                        onclick="increaseProductQuantity('naruto-50')">+</button>
-                                </div>
-                                <button
-                                    class="flex-1 text-sm border border-gray-600 hover:border-shonen-red hover:bg-shonen-red px-3 py-1 rounded transition-colors add-to-cart-btn"
-                                    aria-label="Ajouter Naruto Vol. 50 au panier"
-                                    onclick="addToCart('naruto-50', 'Naruto Vol. 50', 6.90)">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div data-category="manga" data-product-id="demon-slayer-15"
-                        class="product-card bg-shonen-gray group hover:shadow-[0_0_20px_rgba(220,38,38,0.4)] transition-all duration-300 border border-shonen-gray hover:border-shonen-red">
-                        <div class="h-64 overflow-hidden bg-black relative">
-                            <span
-                                class="absolute top-2 left-2 bg-green-600 text-white text-xs font-bold px-2 py-1 z-10">EN
-                                STOCK</span>
-                            <img src="images/demon-slayer-vol15.jpg" alt="Demon Slayer Volume 15"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg mb-1 text-white">Demon Slayer Vol. 15</h3>
-                            <p class="text-gray-400 text-sm mb-3">Koyoharu Gotouge</p>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-shonen-red font-bold text-xl">6.90 €</span>
-                            </div>
-                            <div class="product-controls">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn-product"
-                                        onclick="decreaseProductQuantity('demon-slayer-15')">−</button>
-                                    <input type="number" class="product-quantity" value="1" min="1" max="99">
-                                    <button class="quantity-btn-product"
-                                        onclick="increaseProductQuantity('demon-slayer-15')">+</button>
-                                </div>
-                                <button
-                                    class="flex-1 text-sm border border-gray-600 hover:border-shonen-red hover:bg-shonen-red px-3 py-1 rounded transition-colors add-to-cart-btn"
-                                    aria-label="Ajouter Demon Slayer Vol. 15 au panier"
-                                    onclick="addToCart('demon-slayer-15', 'Demon Slayer Vol. 15', 6.90)">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div data-category="manga" data-product-id="jujutsu-kaisen-20"
-                        class="product-card bg-shonen-gray group hover:shadow-[0_0_20px_rgba(220,38,38,0.4)] transition-all duration-300 border border-shonen-gray hover:border-shonen-red">
-                        <div class="h-64 overflow-hidden bg-black relative">
-                            <img src="images/jujutsu-kaisen-vol20.jpg" alt="Jujutsu Kaisen Volume 20"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg mb-1 text-white">Jujutsu Kaisen Vol. 20</h3>
-                            <p class="text-gray-400 text-sm mb-3">Gege Akutami</p>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-shonen-red font-bold text-xl">6.90 €</span>
-                            </div>
-                            <div class="product-controls">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn-product"
-                                        onclick="decreaseProductQuantity('jujutsu-kaisen-20')">−</button>
-                                    <input type="number" class="product-quantity" value="1" min="1" max="99">
-                                    <button class="quantity-btn-product"
-                                        onclick="increaseProductQuantity('jujutsu-kaisen-20')">+</button>
-                                </div>
-                                <button
-                                    class="flex-1 text-sm border border-gray-600 hover:border-shonen-red hover:bg-shonen-red px-3 py-1 rounded transition-colors add-to-cart-btn"
-                                    aria-label="Ajouter Jujutsu Kaisen Vol. 20 au panier"
-                                    onclick="addToCart('jujutsu-kaisen-20', 'Jujutsu Kaisen Vol. 20', 6.90)">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div data-category="bd" data-product-id="asterix-gaul"
-                        class="product-card bg-shonen-gray group hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] transition-all duration-300 border border-shonen-gray hover:border-orange-500">
-                        <div class="h-64 overflow-hidden bg-black relative">
-                            <span
-                                class="absolute top-2 left-2 bg-orange-600 text-white text-xs font-bold px-2 py-1 z-10">SOLDE</span>
-                            <img src="images/asterix-gaul.jpg" alt="Astérix en Gaule"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg mb-1 text-white">Astérix en Gaule</h3>
-                            <p class="text-gray-400 text-sm mb-3">Uderzo & Goscinny</p>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-shonen-red font-bold text-xl">8.99 €</span>
-                            </div>
-                            <div class="product-controls">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn-product"
-                                        onclick="decreaseProductQuantity('asterix-gaul')">−</button>
-                                    <input type="number" class="product-quantity" value="1" min="1" max="99">
-                                    <button class="quantity-btn-product"
-                                        onclick="increaseProductQuantity('asterix-gaul')">+</button>
-                                </div>
-                                <button
-                                    class="flex-1 text-sm border border-gray-600 hover:border-orange-500 hover:bg-orange-600 px-3 py-1 rounded transition-colors add-to-cart-btn"
-                                    aria-label="Ajouter Astérix en Gaule au panier"
-                                    onclick="addToCart('asterix-gaul', 'Astérix en Gaule', 8.99)">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div data-category="comics" data-product-id="spider-man-201"
-                        class="product-card bg-shonen-gray group hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all duration-300 border border-shonen-gray hover:border-blue-500">
-                        <div class="h-64 overflow-hidden bg-black relative">
-                            <img src="images/spider-man-201.jpg" alt="Spider-Man #201"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg mb-1 text-white">Spider-Man #201</h3>
-                            <p class="text-gray-400 text-sm mb-3">Stan Lee</p>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-shonen-red font-bold text-xl">12.99 €</span>
-                            </div>
-                            <div class="product-controls">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn-product"
-                                        onclick="decreaseProductQuantity('spider-man-201')">−</button>
-                                    <input type="number" class="product-quantity" value="1" min="1" max="99">
-                                    <button class="quantity-btn-product"
-                                        onclick="increaseProductQuantity('spider-man-201')">+</button>
-                                </div>
-                                <button
-                                    class="flex-1 text-sm border border-gray-600 hover:border-blue-500 hover:bg-blue-600 px-3 py-1 rounded transition-colors add-to-cart-btn"
-                                    aria-label="Ajouter Spider-Man #201 au panier"
-                                    onclick="addToCart('spider-man-201', 'Spider-Man #201', 12.99)">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div data-category="manga" data-product-id="my-hero-academia-42"
-                        class="product-card bg-shonen-gray group hover:shadow-[0_0_20px_rgba(220,38,38,0.4)] transition-all duration-300 border border-shonen-gray hover:border-shonen-red">
-                        <div class="h-64 overflow-hidden bg-black relative">
-                            <span
-                                class="absolute top-2 left-2 bg-shonen-red text-white text-xs font-bold px-2 py-1 z-10">NOUVEAU</span>
-                            <img src="images/my-hero-academia-vol42.jpg" alt="My Hero Academia Volume 42"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg mb-1 text-white">My Hero Academia Vol. 42</h3>
-                            <p class="text-gray-400 text-sm mb-3">Kohei Horikoshi</p>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-shonen-red font-bold text-xl">6.90 €</span>
-                            </div>
-                            <div class="product-controls">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn-product"
-                                        onclick="decreaseProductQuantity('my-hero-academia-42')">−</button>
-                                    <input type="number" class="product-quantity" value="1" min="1" max="99">
-                                    <button class="quantity-btn-product"
-                                        onclick="increaseProductQuantity('my-hero-academia-42')">+</button>
-                                </div>
-                                <button
-                                    class="flex-1 text-sm border border-gray-600 hover:border-shonen-red hover:bg-shonen-red px-3 py-1 rounded transition-colors add-to-cart-btn"
-                                    aria-label="Ajouter My Hero Academia Vol. 42 au panier"
-                                    onclick="addToCart('my-hero-academia-42', 'My Hero Academia Vol. 42', 6.90)">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div data-category="bd" data-product-id="tintin-lune"
-                        class="product-card bg-shonen-gray group hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] transition-all duration-300 border border-shonen-gray hover:border-orange-500">
-                        <div class="h-64 overflow-hidden bg-black relative">
-                            <img src="images/tintin-lune.jpg" alt="Tintin sur la Lune"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg mb-1 text-white">Tintin: Objectif Lune</h3>
-                            <p class="text-gray-400 text-sm mb-3">Hergé</p>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-shonen-red font-bold text-xl">10.50 €</span>
-                            </div>
-                            <div class="product-controls">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn-product"
-                                        onclick="decreaseProductQuantity('tintin-lune')">−</button>
-                                    <input type="number" class="product-quantity" value="1" min="1" max="99">
-                                    <button class="quantity-btn-product"
-                                        onclick="increaseProductQuantity('tintin-lune')">+</button>
-                                </div>
-                                <button
-                                    class="flex-1 text-sm border border-gray-600 hover:border-orange-500 hover:bg-orange-600 px-3 py-1 rounded transition-colors add-to-cart-btn"
-                                    aria-label="Ajouter Tintin: Objectif Lune au panier"
-                                    onclick="addToCart('tintin-lune', 'Tintin: Objectif Lune', 10.50)">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div data-category="comics" data-product-id="x-men-legacy"
-                        class="product-card bg-shonen-gray group hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all duration-300 border border-shonen-gray hover:border-blue-500">
-                        <div class="h-64 overflow-hidden bg-black relative">
-                            <img src="images/x-men-legacy.jpg" alt="X-Men Legacy"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg mb-1 text-white">X-Men Legacy</h3>
-                            <p class="text-gray-400 text-sm mb-3">Mike Carey</p>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-shonen-red font-bold text-xl">14.99 €</span>
-                            </div>
-                            <div class="product-controls">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn-product"
-                                        onclick="decreaseProductQuantity('x-men-legacy')">−</button>
-                                    <input type="number" class="product-quantity" value="1" min="1" max="99">
-                                    <button class="quantity-btn-product"
-                                        onclick="increaseProductQuantity('x-men-legacy')">+</button>
-                                </div>
-                                <button
-                                    class="flex-1 text-sm border border-gray-600 hover:border-blue-500 hover:bg-blue-600 px-3 py-1 rounded transition-colors add-to-cart-btn"
-                                    aria-label="Ajouter X-Men Legacy au panier"
-                                    onclick="addToCart('x-men-legacy', 'X-Men Legacy', 14.99)">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div data-category="manga" data-product-id="attack-on-titan-35"
-                        class="product-card bg-shonen-gray group hover:shadow-[0_0_20px_rgba(220,38,38,0.4)] transition-all duration-300 border border-shonen-gray hover:border-shonen-red">
-                        <div class="h-64 overflow-hidden bg-black relative">
-                            <img src="images/attack-on-titan-vol35.jpg" alt="Attack on Titan Volume 35"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg mb-1 text-white">Attack on Titan Vol. 35</h3>
-                            <p class="text-gray-400 text-sm mb-3">Hajime Isayama</p>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-shonen-red font-bold text-xl">6.90 €</span>
-                            </div>
-                            <div class="product-controls">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn-product"
-                                        onclick="decreaseProductQuantity('attack-on-titan-35')">−</button>
-                                    <input type="number" class="product-quantity" value="1" min="1" max="99">
-                                    <button class="quantity-btn-product"
-                                        onclick="increaseProductQuantity('attack-on-titan-35')">+</button>
-                                </div>
-                                <button
-                                    class="flex-1 text-sm border border-gray-600 hover:border-shonen-red hover:bg-shonen-red px-3 py-1 rounded transition-colors add-to-cart-btn"
-                                    aria-label="Ajouter Attack on Titan Vol. 35 au panier"
-                                    onclick="addToCart('attack-on-titan-35', 'Attack on Titan Vol. 35', 6.90)">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div data-category="bd" data-product-id="lucky-luke-6"
-                        class="product-card bg-shonen-gray group hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] transition-all duration-300 border border-shonen-gray hover:border-orange-500">
-                        <div class="h-64 overflow-hidden bg-black relative">
-                            <span
-                                class="absolute top-2 left-2 bg-green-600 text-white text-xs font-bold px-2 py-1 z-10">EN
-                                STOCK</span>
-                            <img src="images/lucky-luke-06.jpg" alt="Lucky Luke 06"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        </div>
-                        <div class="p-4">
-                            <h3 class="font-bold text-lg mb-1 text-white">Lucky Luke Vol. 6</h3>
-                            <p class="text-gray-400 text-sm mb-3">Morris & Achdé</p>
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-shonen-red font-bold text-xl">9.99 €</span>
-                            </div>
-                            <div class="product-controls">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn-product"
-                                        onclick="decreaseProductQuantity('lucky-luke-6')">−</button>
-                                    <input type="number" class="product-quantity" value="1" min="1" max="99">
-                                    <button class="quantity-btn-product"
-                                        onclick="increaseProductQuantity('lucky-luke-6')">+</button>
-                                </div>
-                                <button
-                                    class="flex-1 text-sm border border-gray-600 hover:border-orange-500 hover:bg-orange-600 px-3 py-1 rounded transition-colors add-to-cart-btn"
-                                    aria-label="Ajouter Lucky Luke Vol. 6 au panier"
-                                    onclick="addToCart('lucky-luke-6', 'Lucky Luke Vol. 6', 9.99)">
-                                    Ajouter
-                                </button>
-                            </div>
-                        </div>
+                    <div class="bg-shonen-gray p-6 rounded-lg shadow flex flex-col items-center">
+                        <div class="text-shonen-red text-3xl mb-2">★ ★ ★ ★ ★</div>
+                        <p class="text-gray-300 text-sm mb-3">"Livraison rapide, je recommande !"</p>
+                        <span class="text-shonen-red font-bold text-xs">- Hugo</span>
                     </div>
                 </div>
             </div>
+        </section>
     </main>
 
     <!-- Modal Panier -->
@@ -584,12 +229,92 @@
             <div id="cartSummary" class="cart-summary"></div>
         </div>
     </div>
-    <footer class="bg-shonen-black py-8 text-center border-t border-gray-800 mt-auto">
-        <p class="text-gray-500 text-sm">
-            &copy; 2026 Shonen Shelf
-        </p>
+
+    <footer class="bg-shonen-black py-10 border-t border-gray-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="mb-4 md:mb-0">
+                <span class="font-headings text-xl text-white">Shonen <span class="text-shonen-red">Shelf</span></span>
+                <p class="text-gray-500 text-xs mt-2">&copy; <span id="year"></span> Shonen Shelf. Tous droits réservés.
+                </p>
+            </div>
+            <div class="flex flex-col md:flex-row gap-4 items-center">
+                <a href="index.html" class="text-gray-400 hover:text-shonen-red text-xs">Accueil</a>
+                <a href="catalogue.html" class="text-gray-400 hover:text-shonen-red text-xs">Catalogue</a>
+                <a href="a-propos.html" class="text-gray-400 hover:text-shonen-red text-xs">À propos</a>
+                <a href="contact.html" class="text-gray-400 hover:text-shonen-red text-xs">Contact</a>
+            </div>
+            <div class="flex gap-3 items-center">
+                <a href="#" class="text-gray-400 hover:text-shonen-red" title="Instagram"><svg class="w-5 h-5"
+                        fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5zm4.25 2.25a6 6 0 1 1 0 12 6 6 0 0 1 0-12zm0 1.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm6.25 1.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                    </svg></a>
+                <a href="#" class="text-gray-400 hover:text-shonen-red" title="Twitter"><svg class="w-5 h-5"
+                        fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M22.46 6c-.77.35-1.6.59-2.47.7a4.3 4.3 0 0 0 1.88-2.37 8.59 8.59 0 0 1-2.72 1.04A4.28 4.28 0 0 0 16.11 4c-2.37 0-4.29 1.92-4.29 4.29 0 .34.04.67.1.99A12.13 12.13 0 0 1 3.1 5.1a4.28 4.28 0 0 0 1.33 5.72c-.7-.02-1.36-.21-1.94-.53v.05c0 2.1 1.5 3.85 3.5 4.25-.36.1-.74.16-1.13.16-.28 0-.54-.03-.8-.08.54 1.7 2.1 2.94 3.95 2.97A8.6 8.6 0 0 1 2 19.54a12.13 12.13 0 0 0 6.56 1.92c7.88 0 12.2-6.53 12.2-12.2 0-.19 0-.37-.01-.56A8.7 8.7 0 0 0 24 4.59a8.5 8.5 0 0 1-2.54.7z" />
+                    </svg></a>
+                <a href="#" class="text-gray-400 hover:text-shonen-red" title="Facebook"><svg class="w-5 h-5"
+                        fill="currentColor" viewBox="0 0 24 24">
+                        <path
+                            d="M17.525 8.998h-2.02V7.797c0-.49.32-.604.545-.604h1.45V4.998h-1.99c-2.2 0-2.71 1.65-2.71 2.71v1.29h-1.36v2.29h1.36v6.71h2.7v-6.71h1.82l.18-2.29z" />
+                    </svg></a>
+            </div>
+        </div>
     </footer>
+    <script>
+        // Footer année dynamique
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+    </script>
+
     <script src="cart.js"></script>
+    <script src="products.js"></script>
+    <script>
+        // --- Vue détaillée produit (modale) ---
+        // Nécessite que products.js expose la variable products
+        const modal = document.getElementById('productDetailModal');
+        const modalContent = document.getElementById('productDetailContent');
+        const closeModalBtn = document.getElementById('closeProductModal');
+
+        function openProductModal(productId) {
+            const p = (window.products || []).find(pr => pr.id === productId);
+            if (!p) return;
+            modalContent.innerHTML = `
+            <div class="flex flex-col items-center">
+                <img src="${p.img}" alt="${p.title}" class="w-40 h-60 object-cover rounded mb-4 shadow-md">
+                ${p.badge ? `<span class="${p.badgeColor || 'bg-shonen-red'} text-white text-xs px-2 py-1 rounded mb-2">${p.badge}</span>` : ''}
+                <h2 class="font-headings text-2xl text-white mb-2 text-center">${p.title}</h2>
+                <div class="text-gray-400 text-sm mb-2">${p.author || ''}</div>
+                <div class="text-shonen-red font-bold text-xl mb-2">${p.price.toFixed(2)} €</div>
+                ${p.description ? `<div class="text-gray-300 text-sm mb-4 text-center">${p.description}</div>` : ''}
+                <button class="add-to-cart-btn bg-shonen-red text-white px-6 py-2 rounded hover:bg-white hover:text-shonen-red transition-all font-bold" onclick="addToCart('${p.id}', '${p.title}', ${p.price})">Ajouter au panier</button>
+            </div>
+        `;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        function closeProductModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        closeModalBtn.addEventListener('click', closeProductModal);
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) closeProductModal();
+        });
+        // Délégation d'événement sur le grid pour ouvrir la modale
+        document.addEventListener('DOMContentLoaded', function () {
+            const grid = document.getElementById('productGrid');
+            grid.addEventListener('click', function (e) {
+                let card = e.target.closest('.product-card');
+                if (card && !e.target.classList.contains('add-to-cart-btn')) {
+                    const pid = card.getAttribute('data-id') || card.querySelector('button')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1];
+                    if (pid) openProductModal(pid);
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

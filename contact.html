@@ -59,19 +59,19 @@
             opacity: 0.5;
         }
 
-        .contact-content {
+        .contact-contenu {
             position: relative;
             z-index: 10;
         }
 
-        .contact-card {
+        .contact-carte {
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9));
             border: 2px solid rgba(220, 38, 38, 0.3);
             animation: slideInUp 0.8s ease-out;
             transition: all 0.4s ease;
         }
 
-        .contact-card:hover {
+        .contact-carte:hover {
             border-color: #DC2626;
             transform: translateY(-8px);
             box-shadow: 0 20px 30px rgba(220, 38, 38, 0.3);
@@ -118,7 +118,7 @@
             transform: translateY(-2px);
         }
 
-        .success-message {
+        .succes-message {
             display: none;
             background-color: rgba(34, 197, 94, 0.2);
             border: 2px solid #22C55E;
@@ -129,18 +129,18 @@
             animation: slideInUp 0.5s ease-out;
         }
 
-        .success-message.show {
+        .succes-message.show {
             display: block;
         }
 
-        .error-message {
+        .erreur-message {
             color: #FCA5A5;
             font-size: 0.875rem;
             margin-top: 4px;
             display: none;
         }
 
-        .error-message.show {
+        .erreur-message.show {
             display: block;
         }
 
@@ -169,7 +169,7 @@
             background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
         }
 
-        .faq-answer {
+        .faq-reponse {
             display: none;
             background: rgba(30, 41, 59, 0.5);
             border: 2px solid rgba(220, 38, 38, 0.2);
@@ -180,16 +180,16 @@
             line-height: 1.6;
         }
 
-        .faq-answer.show {
+        .faq-reponse.show {
             display: block;
         }
     </style>
     <script>
         function toggleFAQ(element) {
-            const answer = element.nextElementSibling;
+            const reponse = element.nextElementSibling;
             const icon = element.querySelector('.toggle-icon');
-            answer.classList.toggle('show');
-            icon.textContent = answer.classList.contains('show') ? '−' : '+';
+            reponse.classList.toggle('show');
+            icon.textContent = reponse.classList.contains('show') ? '−' : '+';
         }
 
         function submitForm(event) {
@@ -202,50 +202,50 @@
             const message = document.getElementById('message').value.trim();
 
             // Réinitialiser les messages d'erreur
-            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+            document.querySelectorAll('.erreur-message').forEach(el => el.classList.remove('show'));
 
             let isValid = true;
 
             // Validation du nom
             if (!name) {
-                document.getElementById('nameError').textContent = 'Veuillez entrer votre nom';
-                document.getElementById('nameError').classList.add('show');
+                document.getElementById('nameErreur').textContent = 'Veuillez entrer votre nom';
+                document.getElementById('nameErreur').classList.add('show');
                 isValid = false;
             }
 
             // Validation de l'email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!email) {
-                document.getElementById('emailError').textContent = 'Veuillez entrer votre email';
-                document.getElementById('emailError').classList.add('show');
+                document.getElementById('emailErreur').textContent = 'Veuillez entrer votre email';
+                document.getElementById('emailErreur').classList.add('show');
                 isValid = false;
             } else if (!emailRegex.test(email)) {
-                document.getElementById('emailError').textContent = 'Veuillez entrer un email valide';
-                document.getElementById('emailError').classList.add('show');
+                document.getElementById('emailErreur').textContent = 'Veuillez entrer un email valide';
+                document.getElementById('emailErreur').classList.add('show');
                 isValid = false;
             }
 
             // Validation du sujet
             if (!subject) {
-                document.getElementById('subjectError').textContent = 'Veuillez entrer un sujet';
-                document.getElementById('subjectError').classList.add('show');
+                document.getElementById('subjectErreur').textContent = 'Veuillez entrer un sujet';
+                document.getElementById('subjectErreur').classList.add('show');
                 isValid = false;
             }
 
             // Validation du message
             if (!message || message.length < 10) {
-                document.getElementById('messageError').textContent = 'Veuillez entrer un message (minimum 10 caractères)';
-                document.getElementById('messageError').classList.add('show');
+                document.getElementById('messageErreur').textContent = 'Veuillez entrer un message (minimum 10 caractères)';
+                document.getElementById('messageErreur').classList.add('show');
                 isValid = false;
             }
 
             if (isValid) {
-                const successMessage = document.getElementById('successMessage');
-                successMessage.classList.add('show');
+                const succesMessage = document.getElementById('succesMessage');
+                succesMessage.classList.add('show');
                 form.reset();
 
                 setTimeout(() => {
-                    successMessage.classList.remove('show');
+                    succesMessage.classList.remove('show');
                 }, 5000);
             }
         }
@@ -307,7 +307,7 @@
         <div id="contact" class="page-section">
             <!-- Hero Section -->
             <section class="contact-hero py-20 px-4">
-                <div class="contact-content max-w-4xl mx-auto text-center">
+                <div class="contact-contenu max-w-4xl mx-auto text-center">
                     <h1 class="text-5xl md:text-6xl font-headings text-white mb-6 uppercase">
                         Nous <span class="text-shonen-red">Contacter</span>
                     </h1>
@@ -323,7 +323,7 @@
                 <div class="max-w-6xl mx-auto px-4">
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
                         <!-- Informations de contact -->
-                        <div class="contact-card p-8 rounded text-center">
+                        <div class="contact-carte p-8 rounded text-center">
                             <div class="text-shonen-red text-5xl mb-4">📍</div>
                             <h3 class="font-headings text-2xl text-white mb-3">Adresse</h3>
                             <p class="text-gray-400">
@@ -333,7 +333,7 @@
                             </p>
                         </div>
 
-                        <div class="contact-card p-8 rounded text-center">
+                        <div class="contact-carte p-8 rounded text-center">
                             <div class="text-shonen-red text-5xl mb-4">📧</div>
                             <h3 class="font-headings text-2xl text-white mb-3">Email</h3>
                             <p class="text-gray-400 mb-2">
@@ -346,7 +346,7 @@
                             </p>
                         </div>
 
-                        <div class="contact-card p-8 rounded text-center">
+                        <div class="contact-carte p-8 rounded text-center">
                             <div class="text-shonen-red text-5xl mb-4">📞</div>
                             <h3 class="font-headings text-2xl text-white mb-3">Téléphone</h3>
                             <p class="text-gray-400 mb-2">
@@ -365,18 +365,18 @@
                         <h2 class="text-4xl font-headings text-shonen-red mb-8 text-center uppercase">Formulaire de
                             Contact</h2>
 
-                        <div id="successMessage" class="success-message">
+                        <div id="succesMessage" class="succes-message">
                             ✓ Merci ! Votre message a été envoyé avec succès. Nous vous répondrons bientôt.
                         </div>
 
-                        <form id="contactForm" onsubmit="submitForm(event)" class="contact-card p-8 rounded">
+                        <form id="contactForm" onsubmit="submitForm(event)" class="contact-carte p-8 rounded">
                             <!-- Nom -->
                             <div class="mb-6">
                                 <label for="name" class="block text-sm font-bold text-gray-300 mb-2">Nom complet
                                     *</label>
                                 <input type="text" id="name" name="name" class="form-input w-full"
                                     placeholder="Votre nom">
-                                <div id="nameError" class="error-message"></div>
+                                <div id="nameErreur" class="erreur-message"></div>
                             </div>
 
                             <!-- Email -->
@@ -384,7 +384,7 @@
                                 <label for="email" class="block text-sm font-bold text-gray-300 mb-2">Email *</label>
                                 <input type="email" id="email" name="email" class="form-input w-full"
                                     placeholder="votre@email.com">
-                                <div id="emailError" class="error-message"></div>
+                                <div id="emailErreur" class="erreur-message"></div>
                             </div>
 
                             <!-- Sujet -->
@@ -397,9 +397,10 @@
                                     <option value="produit">Question sur un produit</option>
                                     <option value="retour">Retour ou remboursement</option>
                                     <option value="partenariat">Partenariat</option>
+                                    <option value="candidature">Candidature spontanée</option>
                                     <option value="autre">Autre</option>
                                 </select>
-                                <div id="subjectError" class="error-message"></div>
+                                <div id="subjectErreur" class="erreur-message"></div>
                             </div>
 
                             <!-- Message -->
@@ -408,7 +409,7 @@
                                     *</label>
                                 <textarea id="message" name="message" rows="5" class="form-input w-full resize-none"
                                     placeholder="Décrivez votre message..."></textarea>
-                                <div id="messageError" class="error-message"></div>
+                                <div id="messageErreur" class="erreur-message"></div>
                             </div>
 
                             <!-- Submit Button -->
@@ -428,7 +429,7 @@
                     <h2 class="text-4xl font-headings text-shonen-red mb-12 text-center uppercase">Horaires d'ouverture
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="contact-card p-8 rounded">
+                        <div class="contact-carte p-8 rounded">
                             <h3 class="font-headings text-2xl text-white mb-6">En ligne 24h/24</h3>
                             <ul class="space-y-3 text-gray-400">
                                 <li class="flex justify-between">
@@ -446,7 +447,7 @@
                             </ul>
                         </div>
 
-                        <div class="contact-card p-8 rounded">
+                        <div class="contact-carte p-8 rounded">
                             <h3 class="font-headings text-2xl text-white mb-6">Par téléphone</h3>
                             <ul class="space-y-3 text-gray-400">
                                 <li class="flex justify-between">
@@ -504,9 +505,8 @@
                             </div>
                             <div class="faq-answer">
                                 Oui, vous avez 30 jours pour retourner un produit non utilisé. Le produit doit être dans
-                                son
-                                emballage d'origine. Les frais de retour sont à votre charge sauf en cas de défaut ou
-                                d'erreur de notre part.
+                                son emballage d'origine. Les frais de retour sont à votre charge sauf en cas de défaut
+                                ou d'erreur de notre part.
                             </div>
                         </div>
 
@@ -555,7 +555,7 @@
 
     <!-- Modal Panier -->
     <div id="cartModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-contenu">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-3xl font-headings text-white uppercase">Votre Panier</h2>
                 <button onclick="closeCart()" class="text-gray-400 hover:text-white text-2xl font-bold">×</button>
