@@ -1,35 +1,103 @@
-.skew-box {
-    transform: skew(-10deg);
+/* ===== SHONEN SHELF - Global Styles ===== */
+
+:root {
+    --red: #DC2626;
+    --dark: #0f172a;
+    --black: #020617;
+    --gray: #1e293b;
 }
 
-.un-skew {
-    transform: skew(10deg)
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.page-section {
-    display: none;
-    animation: fadeIn 0.5s;
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+
+/* ---- Page Sections (SPA mode) ---- */
+.page-section { display: none; animation: fadeInPage 0.4s ease-out; }
+.active-section { display: block; }
+
+@keyframes fadeInPage {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
-.active-section {
-    display: block;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
+/* ---- Hero background ---- */
 .hero-bg {
-    background: linear-gradient(to right, rgba(2, 6, 23, 0.9), rgba(2, 6, 23, 0.7)),
+    background: linear-gradient(135deg, rgba(2,6,23,0.95) 0%, rgba(15,23,42,0.85) 50%, rgba(26,15,46,0.9) 100%),
         url(images/fond-header.jpg);
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
 }
+
+/* ---- Skew utilities ---- */
+.skew-box  { transform: skew(-10deg); }
+.un-skew   { transform: skew(10deg); }
+
+/* ---- Smooth image loading ---- */
+img { transition: opacity 0.3s ease; }
+img[src=""], img:not([src]) { opacity: 0; }
+
+/* ---- Focus ring ---- */
+:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 3px;
+    border-radius: 3px;
+}
+
+/* ---- Active nav link ---- */
+nav a.active-link { color: var(--red) !important; }
+
+/* ---- Mobile menu overlay ---- */
+#mobileMenu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(2,6,23,0.97);
+    z-index: 100;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+#mobileMenu.open { display: flex; }
+#mobileMenu a {
+    font-family: 'Russo One', sans-serif;
+    font-size: 1.5rem;
+    color: white;
+    text-decoration: none;
+    letter-spacing: .1em;
+    transition: color .2s;
+}
+#mobileMenu a:hover { color: var(--red); }
+
+/* ---- Product card image placeholder ---- */
+.product-img-wrap {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    position: relative;
+    overflow: hidden;
+}
+.product-img-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.5));
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ---- Cart modal animation ---- */
+#cartModal { transition: opacity 0.2s; opacity: 0; }
+#cartModal.show { opacity: 1; }
+#cartModal .modal-content { transition: transform 0.25s cubic-bezier(.34,1.4,.64,1); transform: translateY(20px) scale(.97); }
+#cartModal.show .modal-content { transform: translateY(0) scale(1); }
+

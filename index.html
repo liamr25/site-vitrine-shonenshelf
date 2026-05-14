@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shonen Shelf</title>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Russo+One&family=Roboto:wght@300;400;700&display=swap">
+    <title>Shonen Shelf — Étagère de Légendes</title>
+    <meta name="description" content="Le sanctuaire ultime pour vos collections de mangas, comics et BD. Découvrez nos sélections exclusives.">
+    <link rel="shortcut icon" href="images/logo.png" type="image/png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=Roboto:wght@300;400;700&display=swap">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="cart-styles.css">
@@ -15,483 +16,543 @@
             theme: {
                 extend: {
                     colors: {
-                        "shonen-red": "#DC2626",
-                        "shonen-dark": "#0f172a",
+                        "shonen-red":   "#DC2626",
+                        "shonen-dark":  "#0f172a",
                         "shonen-black": "#020617",
-                        "shonen-gray": "#1e293b",
+                        "shonen-gray":  "#1e293b",
                     },
                     fontFamily: {
                         headings: ['"Russo One"', "sans-serif"],
-                        body: ['"Roboto"', "sans-serif"],
+                        body:     ['"Roboto"',    "sans-serif"],
                     },
                     keyframes: {
                         slideInUp: {
-                            "0%": { opacity: "0", transform: "translateY(30px)" },
+                            "0%":   { opacity: "0", transform: "translateY(30px)" },
                             "100%": { opacity: "1", transform: "translateY(0)" },
                         },
-                        pulse: {
-                            "0%, 100%": { opacity: "1" },
-                            "50%": { opacity: "0.8" },
-                        },
                         glow: {
-                            "0%, 100%": { boxShadow: "0 0 10px rgba(220, 38, 38, 0.3)" },
-                            "50%": { boxShadow: "0 0 20px rgba(220, 38, 38, 0.6)" },
+                            "0%,100%": { boxShadow: "0 0 10px rgba(220,38,38,0.35)" },
+                            "50%":     { boxShadow: "0 0 28px rgba(220,38,38,0.7)" },
+                        },
+                        ticker: {
+                            "0%":   { transform: "translateX(100%)" },
+                            "100%": { transform: "translateX(-100%)" },
                         },
                     },
                     animation: {
-                        slideInUp: "slideInUp 0.8s ease-out",
-                        pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-                        glow: "glow 3s ease-in-out infinite",
+                        slideInUp: "slideInUp 0.7s ease-out both",
+                        glow:      "glow 3s ease-in-out infinite",
+                        ticker:    "ticker 28s linear infinite",
                     },
                 },
             },
         };
     </script>
     <style>
-        .hero-bg {
+        .hero-section {
             background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1a0f2e 100%);
-            position: relative;
-            overflow: hidden;
+            position: relative; overflow: hidden; min-height: 580px;
+            display: flex; align-items: center; justify-content: center; text-align: center;
         }
-
-        .hero-bg::before {
+        .hero-section::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(220,38,38,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            opacity: 0.5;
+            position: absolute; inset: 0;
+            background: url('data:image/svg+xml,<svg width="80" height="80" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="g" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M 80 0 L 0 0 0 80" fill="none" stroke="rgba(220,38,38,0.08)" stroke-width="1"/></pattern></defs><rect width="80" height="80" fill="url(%23g)"/></svg>');
         }
-
-        .hero-content {
-            position: relative;
-            z-index: 10;
-            animation: slideInUp 1s ease-out;
+        .hero-glow {
+            position: absolute; width: 600px; height: 600px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(220,38,38,0.12) 0%, transparent 70%);
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            pointer-events: none;
         }
+        .hero-content { position: relative; z-index: 10; padding: 2rem; }
 
         .category-card {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            cursor: pointer;
-            border: 2px solid rgba(220, 38, 38, 0.5);
-            animation: slideInUp 0.8s ease-out;
+            position: relative; overflow: hidden;
+            transition: all 0.35s ease; cursor: pointer;
+            border: 1px solid rgba(220,38,38,0.3);
         }
-
-        .category-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(220, 38, 38, 0.1);
-            transition: left 0.4s ease;
-        }
-
-        .category-card:hover::before {
-            left: 100%;
-        }
-
         .category-card:hover {
             transform: translateY(-8px);
             border-color: #DC2626;
-            box-shadow: 0 20px 30px rgba(220, 38, 38, 0.3);
-            background-color: rgba(220, 38, 38, 0.05);
+            box-shadow: 0 24px 40px rgba(220,38,38,0.25);
+        }
+        .category-icon {
+            width: 64px; height: 64px; margin: 0 auto 1rem;
+            color: #DC2626;
         }
 
-        .cta-button {
-            animation: glow 3s ease-in-out infinite;
-            transition: all 0.3s ease;
+        .new-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .new-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(220,38,38,0.2);
         }
 
-        .cta-button:hover {
-            transform: scale(1.05);
-            animation: none;
+        .feature-item { transition: transform 0.3s, box-shadow 0.3s; }
+        .feature-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(220,38,38,0.15);
         }
 
-        .featured-section {
-            animation: slideInUp 1s ease-out;
-        }
+        .cta-button { animation: glow 3s ease-in-out infinite; transition: all 0.3s ease; }
+        .cta-button:hover { transform: scale(1.05); animation: none; }
 
-        .feature-item {
-            animation: slideInUp 1s ease-out;
-            animation-fill-mode: both;
-        }
+        .ticker-wrap { overflow: hidden; white-space: nowrap; }
+        .ticker-inner { display: inline-block; animation: ticker 28s linear infinite; }
 
-        .feature-item:nth-child(1) {
-            animation-delay: 0.1s;
-        }
+        [data-animate] { opacity: 0; transform: translateY(24px); transition: opacity 0.55s ease, transform 0.55s ease; }
+        [data-animate].visible { opacity: 1; transform: translateY(0); }
 
-        .feature-item:nth-child(2) {
-            animation-delay: 0.2s;
-        }
+        .stars { color: #fbbf24; letter-spacing: 2px; }
 
-        .feature-item:nth-child(3) {
-            animation-delay: 0.3s;
-        }
-
-        .animate-fade-in {
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        #hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+        #hamburger span { display: block; width: 22px; height: 2px; background: white; transition: all .3s; border-radius: 2px; }
+        #hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        #hamburger.open span:nth-child(2) { opacity: 0; }
+        #hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+        @media(max-width:768px) {
+            #hamburger { display: flex; }
+            #desktopNav { display: none !important; }
         }
     </style>
 </head>
 
 <body class="bg-shonen-dark text-white font-body min-h-screen flex flex-col">
+
+    <div id="mobileMenu" role="dialog" aria-label="Menu navigation mobile">
+        <button id="closeMobile" aria-label="Fermer le menu" class="absolute top-5 right-5 text-white text-3xl">×</button>
+        <a href="index.html">Accueil</a>
+        <a href="catalogue.html">Catalogue</a>
+        <a href="a-propos.html">À propos</a>
+        <a href="equipe.html">L'équipe</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
     <nav class="bg-shonen-black border-b border-shonen-red sticky top-0 z-50 shadow-lg">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between h-20 items-center">
-                <div class="cursor-pointer">
-                    <a href="index.html">
-                        <span
-                            class="font-headings text-2xl tracking-wider text-white hover:text-shonen-red transition-colors">
-                            SHONEN
-                            <span class="text-shonen-red">
-                                SHELF
-                            </span>
-                        </span>
+                <a href="index.html" class="font-headings text-2xl tracking-wider text-white hover:text-shonen-red transition-colors">
+                    SHONEN <span class="text-shonen-red">SHELF</span>
+                </a>
+                <div id="desktopNav" class="hidden md:flex space-x-6 text-sm font-bold uppercase tracking-wide">
+                    <a href="index.html"     class="hover:text-shonen-red transition-colors active-link">Accueil</a>
+                    <a href="catalogue.html" class="hover:text-shonen-red transition-colors">Catalogue</a>
+                    <a href="a-propos.html"  class="hover:text-shonen-red transition-colors">À propos</a>
+                    <a href="equipe.html"    class="hover:text-shonen-red transition-colors">L'équipe</a>
+                    <a href="contact.html"   class="hover:text-shonen-red transition-colors">Contact</a>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a href="connexion.html" class="text-gray-300 hover:text-white flex items-center gap-2 transition-colors" aria-label="Connexion / Inscription">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                        <span class="hidden sm:inline text-xs">Connexion</span>
                     </a>
-                </div>
-                <div class="hidden md:flex space-x-6 text-sm font-bold uppercase tracking-wide">
-                    <button class="hover:text-shonen-red transition-colors"><a href="index.html">Accueil</a>
-                    </button>
-                    <button class="hover:text-shonen-red transition-colors"><a href="catalogue.html">Catalogue</a>
-                    </button>
-                    <button class="hover:text-shonen-red transition-colors"><a href="a-propos.html">À propos</a>
-                    </button>
-                    <button class="hover:text-shonen-red transition-colors"><a href="equipe.html">L'équipe</a>
-                    </button>
-                    <button class="hover:text-shonen-red transition-colors"><a href="contact.html">Contact</a>
-                    </button>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <button onclick="showPage('login')" class="text-gray-300 hover:text-white flex items-center gap-2">
+                    <button onclick="openCart()" aria-label="Ouvrir le panier"
+                        class="bg-shonen-red hover:bg-red-700 text-white p-2 rounded transition-colors relative">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
-                        <span class="hidden sm:inline text-xs"><a href="connexion.html">Connexion /
-                                Inscription</a></span>
+                        <span class="cart-badge absolute -top-2 -right-2 bg-white text-shonen-red text-xs font-bold rounded-full w-5 h-5 items-center justify-center hidden">0</span>
                     </button>
-                    <button onclick="openCart()"
-                        class="bg-shonen-red hover:bg-red-700 text-white p-2 rounded-sm transition-colors relative">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
-                            </path>
-                        </svg>
-                        <span
-                            class="cart-badge absolute -top-2 -right-2 bg-white text-shonen-red text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">0</span>
-                    </button>
+                    <button id="hamburger" aria-label="Menu" aria-expanded="false">
+                        <span></span><span></span><span></span>
                     </button>
                 </div>
             </div>
         </div>
     </nav>
-    <main class="flex-grow">
-        <div id="accueil" class="page-section active-section">
-            <section class="hero-bg h-[500px] flex items-center justify-center text-center px-4">
-                <div class="hero-content">
-                    <h1 class="text-5xl md:text-7xl font-headings mb-4 text-white">Étagère de <span
-                            class="text-shonen-red">légendes</span></h1>
-                    <div class="mb-4">
-                        <span class="text-shonen-red text-2xl md:text-3xl font-headings animate-pulse"
-                            id="slogan-anim">Collectionnez. Lisez. Partagez.</span>
-                    </div>
-                    <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Le sanctuaire ultime pour vos collections de
-                        mangas, comics et BD. Découvrez nos sélections exclusives et étendez votre bibliothèque.
-                    </p>
-                    <button
-                        class="cta-button bg-shonen-red hover:bg-white hover:text-shonen-red text-white font-bold py-3 px-8 tracking-widest transition-all border-2 border-transparent hover:border-shonen-red">
-                        <a href="catalogue.html">Voir la collection</a>
-                    </button>
-                </div>
-            </section>
 
-            <section class="py-16 bg-shonen-dark">
-                <div class="max-w-7xl mx-auto px-4">
-                    <h2 class="text-4xl font-headings text-shonen-red mb-12 text-center uppercase">Nos catégories</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <!-- ...existing code for categories... -->
-                        <div class="category-card bg-shonen-gray p-8 hover:bg-shonen-gray transition cursor-pointer feature-item"
-                            onclick="window.location.href='catalogue.html'">
-                            <div class="mb-4">
-                                <svg class="w-16 h-16 text-shonen-red mx-auto" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6.253v13m0-13C6.5 6.253 2 10.998 2 17s4.5 10.747 10 10.747c5.5 0 10-4.998 10-10.747 0-6.002-4.5-10.747-10-10.747z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <h3 class="font-headings text-2xl mb-3 text-white">Manga</h3>
-                            <p class="text-gray-400 text-sm mb-4">Découvrez nos mangas : Shonen, Seinen, Shojo et bien
-                                d'autres. Des séries populaires aux trésors cachés.</p>
-                            <div class="text-shonen-red font-bold flex items-center justify-center gap-2">
-                                Explorer <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="category-card bg-shonen-gray p-8 hover:bg-shonen-gray transition cursor-pointer feature-item"
-                            onclick="window.location.href='catalogue.html'">
-                            <div class="mb-4">
-                                <svg class="w-16 h-16 text-shonen-red mx-auto" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                </svg>
-                            </div>
-                            <h3 class="font-headings text-2xl mb-3 text-white">Comics</h3>
-                            <p class="text-gray-400 text-sm mb-4">Une collection complète de comics Marvel, DC et bien
-                                d'autres univers captivants.</p>
-                            <div class="text-shonen-red font-bold flex items-center justify-center gap-2">
-                                Explorer <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="category-card bg-shonen-gray p-8 hover:bg-shonen-gray transition cursor-pointer feature-item"
-                            onclick="window.location.href='catalogue.html'">
-                            <div class="mb-4">
-                                <svg class="w-16 h-16 text-shonen-red mx-auto" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6.253v13m0-13C6.5 6.253 2 10.998 2 17s4.5 10.747 10 10.747c5.5 0 10-4.998 10-10.747 0-6.002-4.5-10.747-10-10.747z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <h3 class="font-headings text-2xl mb-3 text-white">BD</h3>
-                            <p class="text-gray-400 text-sm mb-4">Plongez dans les mondes de la BD franco-belge et des
-                                romans graphiques contemporains.</p>
-                            <div class="text-shonen-red font-bold flex items-center justify-center gap-2">
-                                Explorer <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Section Nouveautés -->
-            <section class="py-16 bg-shonen-black border-t border-shonen-gray">
-                <div class="max-w-7xl mx-auto px-4">
-                    <h2 class="text-4xl font-headings text-shonen-red mb-12 text-center uppercase">Nouveautés</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                        <div
-                            class="bg-shonen-gray p-6 rounded-lg shadow-lg flex flex-col items-center hover:scale-105 transition-transform">
-                            <img src="images/manga1.jpg" alt="Manga 1"
-                                class="w-28 h-40 object-cover rounded mb-4 shadow-md">
-                            <h3 class="font-headings text-lg text-white mb-2">One Piece T.105</h3>
-                            <span class="text-shonen-red font-bold mb-1">9,99€</span>
-                            <span class="text-gray-400 text-xs mb-2">Eiichiro Oda</span>
-                            <button
-                                class="bg-shonen-red text-white px-4 py-1 rounded hover:bg-white hover:text-shonen-red transition-all text-xs">Voir</button>
-                        </div>
-                        <div
-                            class="bg-shonen-gray p-6 rounded-lg shadow-lg flex flex-col items-center hover:scale-105 transition-transform">
-                            <img src="images/comics1.jpg" alt="Comics 1"
-                                class="w-28 h-40 object-cover rounded mb-4 shadow-md">
-                            <h3 class="font-headings text-lg text-white mb-2">Batman : Year One</h3>
-                            <span class="text-shonen-red font-bold mb-1">14,50€</span>
-                            <span class="text-gray-400 text-xs mb-2">Frank Miller</span>
-                            <button
-                                class="bg-shonen-red text-white px-4 py-1 rounded hover:bg-white hover:text-shonen-red transition-all text-xs">Voir</button>
-                        </div>
-                        <div
-                            class="bg-shonen-gray p-6 rounded-lg shadow-lg flex flex-col items-center hover:scale-105 transition-transform">
-                            <img src="images/bd1.jpg" alt="BD 1" class="w-28 h-40 object-cover rounded mb-4 shadow-md">
-                            <h3 class="font-headings text-lg text-white mb-2">Astérix chez les Pictes</h3>
-                            <span class="text-shonen-red font-bold mb-1">11,90€</span>
-                            <span class="text-gray-400 text-xs mb-2">Ferri & Conrad</span>
-                            <button
-                                class="bg-shonen-red text-white px-4 py-1 rounded hover:bg-white hover:text-shonen-red transition-all text-xs">Voir</button>
-                        </div>
-                        <div
-                            class="bg-shonen-gray p-6 rounded-lg shadow-lg flex flex-col items-center hover:scale-105 transition-transform">
-                            <img src="images/manga2.jpg" alt="Manga 2"
-                                class="w-28 h-40 object-cover rounded mb-4 shadow-md">
-                            <h3 class="font-headings text-lg text-white mb-2">Jujutsu Kaisen T.23</h3>
-                            <span class="text-shonen-red font-bold mb-1">7,20€</span>
-                            <span class="text-gray-400 text-xs mb-2">Gege Akutami</span>
-                            <button
-                                class="bg-shonen-red text-white px-4 py-1 rounded hover:bg-white hover:text-shonen-red transition-all text-xs">Voir</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-16 bg-shonen-black border-t border-shonen-gray">
-                <div class="max-w-7xl mx-auto px-4">
-                    <h2 class="text-4xl font-headings text-shonen-red mb-12 text-center uppercase">Pourquoi nous choisir
-                        ?</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <div class="bg-shonen-gray p-6 rounded border border-shonen-red/30 feature-item">
-                            <div class="text-shonen-red text-4xl font-bold mb-3">✓</div>
-                            <h3 class="font-headings text-lg mb-2 text-white">Sélection curatée</h3>
-                            <p class="text-gray-400 text-sm">Les meilleures séries sélectionnées par nos experts</p>
-                        </div>
-
-                        <div class="bg-shonen-gray p-6 rounded border border-shonen-red/30 feature-item">
-                            <div class="text-shonen-red text-4xl font-bold mb-3">✓</div>
-                            <h3 class="font-headings text-lg mb-2 text-white">Prix compétitifs</h3>
-                            <p class="text-gray-400 text-sm">Les meilleurs prix pour votre collection</p>
-                        </div>
-
-                        <div class="bg-shonen-gray p-6 rounded border border-shonen-red/30 feature-item">
-                            <div class="text-shonen-red text-4xl font-bold mb-3">✓</div>
-                            <h3 class="font-headings text-lg mb-2 text-white">Livraison rapide</h3>
-                            <p class="text-gray-400 text-sm">Expédition rapide et sécurisée à domicile</p>
-                        </div>
-
-                        <div class="bg-shonen-gray p-6 rounded border border-shonen-red/30 feature-item">
-                            <div class="text-shonen-red text-4xl font-bold mb-3">✓</div>
-                            <h3 class="font-headings text-lg mb-2 text-white">Support client</h3>
-                            <p class="text-gray-400 text-sm">Équipe dédiée à votre service 24/7</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="py-16 bg-shonen-dark">
-                <div class="max-w-7xl mx-auto px-4 text-center featured-section">
-                    <h2 class="text-4xl font-headings text-shonen-red mb-8 uppercase">Rejoignez notre communauté</h2>
-                    <p class="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">Inscrivez-vous pour recevoir nos nouveautés,
-                        nos offres exclusives et suivre votre communauté de lecteurs passionnés.</p>
-                    <button
-                        class="bg-shonen-red hover:bg-white hover:text-shonen-red text-white font-bold py-3 px-12 tracking-widest transition-all border-2 border-transparent hover:border-shonen-red">
-                        <a href="inscription.html">S'inscrire maintenant</a>
-                    </button>
-                </div>
-            </section>
-
-            <!-- Section Avis clients -->
-            <section class="py-16 bg-shonen-black border-t border-shonen-gray">
-                <div class="max-w-5xl mx-auto px-4">
-                    <h2 class="text-3xl font-headings text-shonen-red mb-10 text-center uppercase">Avis clients</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="bg-shonen-gray p-6 rounded-lg shadow flex flex-col items-center">
-                            <div class="text-shonen-red text-3xl mb-2">★ ★ ★ ★ ★</div>
-                            <p class="text-gray-300 text-sm mb-3">"Livraison rapide, mangas bien emballés et service
-                                client au top !"</p>
-                            <span class="text-shonen-red font-bold text-xs">- Camille</span>
-                        </div>
-                        <div class="bg-shonen-gray p-6 rounded-lg shadow flex flex-col items-center">
-                            <div class="text-shonen-red text-3xl mb-2">★ ★ ★ ★ ★</div>
-                            <p class="text-gray-300 text-sm mb-3">"Super sélection, j'ai trouvé des BD rares pour
-                                compléter ma collection."</p>
-                            <span class="text-shonen-red font-bold text-xs">- Julien</span>
-                        </div>
-                        <div class="bg-shonen-gray p-6 rounded-lg shadow flex flex-col items-center">
-                            <div class="text-shonen-red text-3xl mb-2">★ ★ ★ ★ ★</div>
-                            <p class="text-gray-300 text-sm mb-3">"Site très intuitif, je recommande à tous les
-                                passionnés !"</p>
-                            <span class="text-shonen-red font-bold text-xs">- Sarah</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <!-- Modal Panier -->
-    <div id="cartModal" class="modal">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-3xl font-headings text-white uppercase">Votre Panier</h2>
-                <button onclick="closeCart()" class="text-gray-400 hover:text-white text-2xl font-bold">×</button>
-            </div>
-            <div id="cartItems" class="mb-4 max-h-96 overflow-y-auto"></div>
-            <div id="cartSummary" class="cart-summary"></div>
+    <div class="bg-shonen-red py-1.5 overflow-hidden text-xs font-bold tracking-widest uppercase">
+        <div class="ticker-inner text-white opacity-90">
+            &nbsp;&nbsp;&nbsp; 🚀 Livraison offerte dès 35€ d'achat &nbsp;•&nbsp;
+            📦 Expédition sous 24h &nbsp;•&nbsp;
+            🆕 Nouveaux mangas chaque semaine &nbsp;•&nbsp;
+            ⭐ +5 000 clients satisfaits &nbsp;•&nbsp;
+            🎁 -10% sur votre 1ère commande avec le code BIENVENUE &nbsp;•&nbsp;
+            📚 Catalogue de +500 références disponibles &nbsp;&nbsp;&nbsp;
         </div>
     </div>
 
-    <footer class="bg-shonen-black py-10 border-t border-gray-800 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="mb-4 md:mb-0">
-                <span class="font-headings text-xl text-white">Shonen <span class="text-shonen-red">Shelf</span></span>
-                <p class="text-gray-500 text-xs mt-2">&copy; <span id="year"></span> Shonen Shelf. Tous droits réservés.
+    <main class="flex-grow">
+
+        <section class="hero-section px-4">
+            <div class="hero-glow"></div>
+            <div class="hero-content max-w-4xl mx-auto animate-slideInUp">
+                <div class="inline-block bg-shonen-red/20 border border-shonen-red/50 text-shonen-red text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-6">
+                    ✦ Le sanctuaire des collectionneurs ✦
+                </div>
+                <h1 class="text-5xl md:text-7xl font-headings mb-5 text-white leading-tight">
+                    Étagère de <span class="text-shonen-red">légendes</span>
+                </h1>
+                <p class="text-shonen-red text-xl md:text-2xl font-headings mb-5" id="slogan-anim">
+                    Collectionnez. Lisez. Partagez.
                 </p>
+                <p class="text-lg text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+                    Le sanctuaire ultime pour vos collections de mangas, comics et BD.
+                    Découvrez nos sélections exclusives et étendez votre bibliothèque.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="catalogue.html"
+                        class="cta-button bg-shonen-red text-white font-bold py-4 px-10 tracking-widest uppercase transition-all border-2 border-shonen-red hover:bg-transparent hover:text-shonen-red text-sm">
+                        Voir la collection →
+                    </a>
+                    <a href="a-propos.html"
+                        class="bg-transparent text-white font-bold py-4 px-10 tracking-widest uppercase transition-all border-2 border-white/30 hover:border-white text-sm">
+                        En savoir plus
+                    </a>
+                </div>
+                <div class="flex flex-wrap justify-center gap-8 mt-12 pt-8 border-t border-white/10">
+                    <div class="text-center">
+                        <p class="text-3xl font-headings text-shonen-red">500+</p>
+                        <p class="text-gray-400 text-xs uppercase tracking-wider mt-1">Références</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-headings text-shonen-red">5K+</p>
+                        <p class="text-gray-400 text-xs uppercase tracking-wider mt-1">Clients</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-headings text-shonen-red">3</p>
+                        <p class="text-gray-400 text-xs uppercase tracking-wider mt-1">Catégories</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-3xl font-headings text-shonen-red">24h</p>
+                        <p class="text-gray-400 text-xs uppercase tracking-wider mt-1">Expédition</p>
+                    </div>
+                </div>
             </div>
-            <div class="flex flex-col md:flex-row gap-4 items-center">
-                <a href="index.html" class="text-gray-400 hover:text-shonen-red text-xs">Accueil</a>
-                <a href="catalogue.html" class="text-gray-400 hover:text-shonen-red text-xs">Catalogue</a>
-                <a href="a-propos.html" class="text-gray-400 hover:text-shonen-red text-xs">À propos</a>
-                <a href="contact.html" class="text-gray-400 hover:text-shonen-red text-xs">Contact</a>
+        </section>
+
+        <section class="py-20 bg-shonen-dark">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="text-center mb-14" data-animate>
+                    <h2 class="text-4xl font-headings text-shonen-red uppercase mb-3">Nos catégories</h2>
+                    <p class="text-gray-400 text-sm max-w-xl mx-auto">Du Shonen au Seinen, des comics Marvel aux bandes dessinées franco-belges — tout est là.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="category-card bg-shonen-gray p-10 text-center" onclick="window.location.href='catalogue.html'" data-animate>
+                        <svg class="category-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                        </svg>
+                        <h3 class="font-headings text-2xl mb-3 text-white">Manga</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Shonen, Seinen, Shojo et bien d'autres. Des séries populaires aux trésors cachés du Japon.</p>
+                        <span class="text-shonen-red font-bold text-sm flex items-center justify-center gap-1">
+                            Explorer <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </span>
+                    </div>
+                    <div class="category-card bg-shonen-gray p-10 text-center" onclick="window.location.href='catalogue.html'" data-animate style="transition-delay:.1s">
+                        <svg class="category-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        <h3 class="font-headings text-2xl mb-3 text-white">Comics</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Marvel, DC et bien d'autres univers captivants. Des origines aux arcs légendaires.</p>
+                        <span class="text-shonen-red font-bold text-sm flex items-center justify-center gap-1">
+                            Explorer <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </span>
+                    </div>
+                    <div class="category-card bg-shonen-gray p-10 text-center" onclick="window.location.href='catalogue.html'" data-animate style="transition-delay:.2s">
+                        <svg class="category-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"/>
+                        </svg>
+                        <h3 class="font-headings text-2xl mb-3 text-white">BD</h3>
+                        <p class="text-gray-400 text-sm mb-6 leading-relaxed">La BD franco-belge et les romans graphiques contemporains pour tous les âges.</p>
+                        <span class="text-shonen-red font-bold text-sm flex items-center justify-center gap-1">
+                            Explorer <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </span>
+                    </div>
+                </div>
             </div>
-            <div class="flex gap-3 items-center">
-                <a href="#" class="text-gray-400 hover:text-shonen-red" title="Instagram"><svg class="w-5 h-5"
-                        fill="currentColor" viewBox="0 0 24 24">
-                        <path
-                            d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5zm4.25 2.25a6 6 0 1 1 0 12 6 6 0 0 1 0-12zm0 1.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm6.25 1.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                    </svg></a>
-                <a href="#" class="text-gray-400 hover:text-shonen-red" title="Twitter"><svg class="w-5 h-5"
-                        fill="currentColor" viewBox="0 0 24 24">
-                        <path
-                            d="M22.46 6c-.77.35-1.6.59-2.47.7a4.3 4.3 0 0 0 1.88-2.37 8.59 8.59 0 0 1-2.72 1.04A4.28 4.28 0 0 0 16.11 4c-2.37 0-4.29 1.92-4.29 4.29 0 .34.04.67.1.99A12.13 12.13 0 0 1 3.1 5.1a4.28 4.28 0 0 0 1.33 5.72c-.7-.02-1.36-.21-1.94-.53v.05c0 2.1 1.5 3.85 3.5 4.25-.36.1-.74.16-1.13.16-.28 0-.54-.03-.8-.08.54 1.7 2.1 2.94 3.95 2.97A8.6 8.6 0 0 1 2 19.54a12.13 12.13 0 0 0 6.56 1.92c7.88 0 12.2-6.53 12.2-12.2 0-.19 0-.37-.01-.56A8.7 8.7 0 0 0 24 4.59a8.5 8.5 0 0 1-2.54.7z" />
-                    </svg></a>
-                <a href="#" class="text-gray-400 hover:text-shonen-red" title="Facebook"><svg class="w-5 h-5"
-                        fill="currentColor" viewBox="0 0 24 24">
-                        <path
-                            d="M17.525 8.998h-2.02V7.797c0-.49.32-.604.545-.604h1.45V4.998h-1.99c-2.2 0-2.71 1.65-2.71 2.71v1.29h-1.36v2.29h1.36v6.71h2.7v-6.71h1.82l.18-2.29z" />
-                    </svg></a>
+        </section>
+
+        <section class="py-20 bg-shonen-black border-t border-shonen-gray">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="flex items-end justify-between mb-12" data-animate>
+                    <div>
+                        <h2 class="text-4xl font-headings text-shonen-red uppercase mb-2">Nouveautés</h2>
+                        <p class="text-gray-400 text-sm">Les dernières sorties, sélectionnées pour vous.</p>
+                    </div>
+                    <a href="catalogue.html" class="text-shonen-red hover:text-white text-sm font-bold uppercase tracking-wider transition-colors hidden sm:block">
+                        Voir tout →
+                    </a>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="new-card bg-shonen-gray rounded-lg overflow-hidden" data-animate>
+                        <div class="product-img-wrap h-52 overflow-hidden">
+                            <img src="images/one-piece-vol100.jpg" alt="One Piece Vol. 100"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <span class="text-xs bg-shonen-red text-white px-2 py-0.5 rounded font-bold uppercase">Nouveau</span>
+                            <h3 class="font-headings text-base text-white mt-2 mb-1">One Piece Vol. 100</h3>
+                            <p class="text-gray-400 text-xs mb-3">Eiichiro Oda</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-shonen-red font-bold">6,90 €</span>
+                                <button onclick="addToCart('one-piece-100','One Piece Vol. 100',6.90,true)"
+                                    class="text-xs bg-shonen-red hover:bg-red-700 text-white px-3 py-1.5 rounded transition-colors font-bold">
+                                    + Panier
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="new-card bg-shonen-gray rounded-lg overflow-hidden" data-animate style="transition-delay:.08s">
+                        <div class="product-img-wrap h-52 overflow-hidden">
+                            <img src="images/batman-year-one.jpg" alt="Batman: Year One"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="font-headings text-base text-white mt-2 mb-1">Batman: Year One</h3>
+                            <p class="text-gray-400 text-xs mb-3">Frank Miller</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-shonen-red font-bold">15,00 €</span>
+                                <button onclick="addToCart('batman-year-one','Batman: Year One',15.00,true)"
+                                    class="text-xs bg-shonen-red hover:bg-red-700 text-white px-3 py-1.5 rounded transition-colors font-bold">
+                                    + Panier
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="new-card bg-shonen-gray rounded-lg overflow-hidden" data-animate style="transition-delay:.16s">
+                        <div class="product-img-wrap h-52 overflow-hidden">
+                            <img src="images/jujutsu-kaisen-vol20.jpg" alt="Jujutsu Kaisen Vol. 20"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <span class="text-xs bg-shonen-red text-white px-2 py-0.5 rounded font-bold uppercase">Nouveau</span>
+                            <h3 class="font-headings text-base text-white mt-2 mb-1">Jujutsu Kaisen Vol. 20</h3>
+                            <p class="text-gray-400 text-xs mb-3">Gege Akutami</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-shonen-red font-bold">7,20 €</span>
+                                <button onclick="addToCart('jujutsu-20','Jujutsu Kaisen Vol. 20',7.20,true)"
+                                    class="text-xs bg-shonen-red hover:bg-red-700 text-white px-3 py-1.5 rounded transition-colors font-bold">
+                                    + Panier
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="new-card bg-shonen-gray rounded-lg overflow-hidden" data-animate style="transition-delay:.24s">
+                        <div class="product-img-wrap h-52 overflow-hidden">
+                            <img src="images/asterix-gaul.jpg" alt="Astérix en Gaule"
+                                class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-4">
+                            <span class="text-xs bg-orange-600 text-white px-2 py-0.5 rounded font-bold uppercase">Solde</span>
+                            <h3 class="font-headings text-base text-white mt-2 mb-1">Astérix en Gaule</h3>
+                            <p class="text-gray-400 text-xs mb-3">Uderzo & Goscinny</p>
+                            <div class="flex items-center justify-between">
+                                <span class="text-shonen-red font-bold">8,99 €</span>
+                                <button onclick="addToCart('asterix-gaul','Astérix en Gaule',8.99,true)"
+                                    class="text-xs bg-shonen-red hover:bg-red-700 text-white px-3 py-1.5 rounded transition-colors font-bold">
+                                    + Panier
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-8 sm:hidden">
+                    <a href="catalogue.html" class="inline-block border border-shonen-red text-shonen-red hover:bg-shonen-red hover:text-white font-bold py-2 px-8 text-sm uppercase tracking-wider transition-all">
+                        Voir tout le catalogue →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-shonen-black border-t border-shonen-gray">
+            <div class="max-w-7xl mx-auto px-4">
+                <div class="text-center mb-14" data-animate>
+                    <h2 class="text-4xl font-headings text-shonen-red uppercase mb-3">Pourquoi nous choisir ?</h2>
+                    <p class="text-gray-400 text-sm">Ce qui nous distingue.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                    <div class="feature-item bg-shonen-gray p-7 rounded-lg border border-shonen-red/20 hover:border-shonen-red/60" data-animate>
+                        <div class="text-3xl mb-4">📚</div>
+                        <h3 class="font-headings text-base mb-2 text-white">Sélection curatée</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Les meilleures séries sélectionnées par nos experts passionnés.</p>
+                    </div>
+                    <div class="feature-item bg-shonen-gray p-7 rounded-lg border border-shonen-red/20 hover:border-shonen-red/60" data-animate style="transition-delay:.08s">
+                        <div class="text-3xl mb-4">💶</div>
+                        <h3 class="font-headings text-base mb-2 text-white">Prix compétitifs</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Les meilleurs prix du marché pour compléter votre collection.</p>
+                    </div>
+                    <div class="feature-item bg-shonen-gray p-7 rounded-lg border border-shonen-red/20 hover:border-shonen-red/60" data-animate style="transition-delay:.16s">
+                        <div class="text-3xl mb-4">🚚</div>
+                        <h3 class="font-headings text-base mb-2 text-white">Livraison rapide</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Expédition sous 24h, emballage soigné, livraison suivie.</p>
+                    </div>
+                    <div class="feature-item bg-shonen-gray p-7 rounded-lg border border-shonen-red/20 hover:border-shonen-red/60" data-animate style="transition-delay:.24s">
+                        <div class="text-3xl mb-4">🎧</div>
+                        <h3 class="font-headings text-base mb-2 text-white">Support 24/7</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Notre équipe est disponible à tout moment pour vous accompagner.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-shonen-dark relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-shonen-red/5 to-transparent pointer-events-none"></div>
+            <div class="max-w-3xl mx-auto px-4 text-center relative z-10" data-animate>
+                <h2 class="text-4xl font-headings text-shonen-red uppercase mb-5">Rejoignez notre communauté</h2>
+                <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+                    Inscrivez-vous pour recevoir nos nouveautés, nos offres exclusives et rejoindre une communauté de lecteurs passionnés.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="inscription.html"
+                        class="cta-button bg-shonen-red hover:bg-transparent hover:text-shonen-red text-white font-bold py-4 px-12 tracking-widest uppercase transition-all border-2 border-shonen-red text-sm">
+                        S'inscrire maintenant
+                    </a>
+                    <span class="text-gray-500 text-xs">Gratuit • Sans engagement • -10% de bienvenue</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-shonen-black border-t border-shonen-gray">
+            <div class="max-w-5xl mx-auto px-4">
+                <div class="text-center mb-12" data-animate>
+                    <h2 class="text-3xl font-headings text-shonen-red uppercase mb-2">Avis clients</h2>
+                    <p class="stars text-sm">★★★★★</p>
+                    <p class="text-gray-400 text-xs mt-1">4.9/5 basé sur 382 avis</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-shonen-gray p-7 rounded-lg border border-shonen-gray hover:border-shonen-red/30 transition-colors" data-animate>
+                        <div class="stars text-base mb-3">★★★★★</div>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-4">"Livraison ultra rapide, mangas parfaitement emballés. Service client au top ! Je recommande sans hésiter."</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-shonen-red rounded-full flex items-center justify-center font-bold text-sm">C</div>
+                            <span class="text-shonen-red font-bold text-sm">Camille R.</span>
+                        </div>
+                    </div>
+                    <div class="bg-shonen-gray p-7 rounded-lg border border-shonen-gray hover:border-shonen-red/30 transition-colors" data-animate style="transition-delay:.1s">
+                        <div class="stars text-base mb-3">★★★★★</div>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-4">"Super sélection, j'ai trouvé des BD rares introuvables ailleurs. Prix très compétitifs, je suis fan !"</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-shonen-red rounded-full flex items-center justify-center font-bold text-sm">J</div>
+                            <span class="text-shonen-red font-bold text-sm">Julien M.</span>
+                        </div>
+                    </div>
+                    <div class="bg-shonen-gray p-7 rounded-lg border border-shonen-gray hover:border-shonen-red/30 transition-colors" data-animate style="transition-delay:.2s">
+                        <div class="stars text-base mb-3">★★★★★</div>
+                        <p class="text-gray-300 text-sm leading-relaxed mb-4">"Site très intuitif, navigation fluide et paiement sécurisé. Je recommande à tous les passionnés !"</p>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-shonen-red rounded-full flex items-center justify-center font-bold text-sm">S</div>
+                            <span class="text-shonen-red font-bold text-sm">Sarah L.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="cartModal" class="modal" role="dialog" aria-label="Votre panier">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-5">
+                <h2 class="text-2xl font-headings text-white uppercase">🛒 Votre Panier</h2>
+                <button onclick="closeCart()" class="text-gray-400 hover:text-white text-3xl font-bold leading-none transition-colors">×</button>
+            </div>
+            <div id="cartItems" class="mb-3 max-h-96 overflow-y-auto pr-1"></div>
+            <div id="cartSummary"></div>
+        </div>
+    </div>
+
+    <footer class="bg-shonen-black py-12 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <span class="font-headings text-xl text-white">SHONEN <span class="text-shonen-red">SHELF</span></span>
+                    <p class="text-gray-500 text-sm mt-3 leading-relaxed max-w-xs">
+                        Le sanctuaire ultime pour les collectionneurs de mangas, comics et BD depuis 2022.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-headings text-sm text-white uppercase tracking-wider mb-4">Navigation</h4>
+                    <div class="flex flex-col gap-2">
+                        <a href="index.html"     class="text-gray-400 hover:text-shonen-red text-sm transition-colors">Accueil</a>
+                        <a href="catalogue.html" class="text-gray-400 hover:text-shonen-red text-sm transition-colors">Catalogue</a>
+                        <a href="a-propos.html"  class="text-gray-400 hover:text-shonen-red text-sm transition-colors">À propos</a>
+                        <a href="contact.html"   class="text-gray-400 hover:text-shonen-red text-sm transition-colors">Contact</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-headings text-sm text-white uppercase tracking-wider mb-4">Suivez-nous</h4>
+                    <div class="flex gap-4">
+                        <a href="#" aria-label="Instagram" class="text-gray-400 hover:text-shonen-red transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5A4.25 4.25 0 0 0 7.75 20.5h8.5A4.25 4.25 0 0 0 20.5 16.25v-8.5A4.25 4.25 0 0 0 16.25 3.5zm4.25 2.25a6 6 0 1 1 0 12 6 6 0 0 1 0-12zm0 1.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zm6.25 1.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>
+                        </a>
+                        <a href="#" aria-label="Twitter / X" class="text-gray-400 hover:text-shonen-red transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M22.46 6c-.77.35-1.6.59-2.47.7a4.3 4.3 0 0 0 1.88-2.37 8.59 8.59 0 0 1-2.72 1.04A4.28 4.28 0 0 0 16.11 4c-2.37 0-4.29 1.92-4.29 4.29 0 .34.04.67.1.99A12.13 12.13 0 0 1 3.1 5.1a4.28 4.28 0 0 0 1.33 5.72c-.7-.02-1.36-.21-1.94-.53v.05c0 2.1 1.5 3.85 3.5 4.25-.36.1-.74.16-1.13.16-.28 0-.54-.03-.8-.08.54 1.7 2.1 2.94 3.95 2.97A8.6 8.6 0 0 1 2 19.54a12.13 12.13 0 0 0 6.56 1.92c7.88 0 12.2-6.53 12.2-12.2 0-.19 0-.37-.01-.56A8.7 8.7 0 0 0 24 4.59a8.5 8.5 0 0 1-2.54.7z"/></svg>
+                        </a>
+                        <a href="#" aria-label="Facebook" class="text-gray-400 hover:text-shonen-red transition-colors">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.525 8.998h-2.02V7.797c0-.49.32-.604.545-.604h1.45V4.998h-1.99c-2.2 0-2.71 1.65-2.71 2.71v1.29h-1.36v2.29h1.36v6.71h2.7v-6.71h1.82l.18-2.29z"/></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-3">
+                <p class="text-gray-600 text-xs">&copy; <span id="year"></span> Shonen Shelf. Tous droits réservés.</p>
+                <div class="flex gap-4">
+                    <a href="#" class="text-gray-600 hover:text-gray-400 text-xs transition-colors">Mentions légales</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-400 text-xs transition-colors">CGV</a>
+                    <a href="#" class="text-gray-600 hover:text-gray-400 text-xs transition-colors">Confidentialité</a>
+                </div>
             </div>
         </div>
     </footer>
+
     <button id="scrollTopBtn"
-        class="fixed bottom-6 right-6 bg-shonen-red text-white p-3 rounded-full shadow-lg hover:bg-white hover:text-shonen-red transition-all hidden z-50"
-        title="Remonter">
+        class="fixed bottom-6 right-6 bg-shonen-red text-white p-3 rounded-full shadow-xl hover:bg-white hover:text-shonen-red transition-all hidden z-50 border-2 border-shonen-red"
+        title="Remonter en haut" aria-label="Remonter en haut">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
         </svg>
     </button>
+
     <script src="cart.js"></script>
     <script>
-        // Slogan animé (optionnel : rotation de slogans)
         const slogans = [
             "Collectionnez. Lisez. Partagez.",
             "Des nouveautés chaque semaine !",
-            "La passion du manga, du comics et de la BD."
+            "La passion du manga, du comics et de la BD.",
+            "Plus de 500 références disponibles."
         ];
-        let sloganIndex = 0;
+        let sloganIdx = 0;
+        const sloganEl = document.getElementById('slogan-anim');
         setInterval(() => {
-            sloganIndex = (sloganIndex + 1) % slogans.length;
-            document.getElementById('slogan-anim').textContent = slogans[sloganIndex];
+            sloganEl.style.opacity = '0';
+            setTimeout(() => {
+                sloganIdx = (sloganIdx + 1) % slogans.length;
+                sloganEl.textContent = slogans[sloganIdx];
+                sloganEl.style.opacity = '1';
+            }, 300);
         }, 3500);
+        sloganEl.style.transition = 'opacity 0.3s';
 
-        // Footer année dynamique
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Scroll to top
         const scrollBtn = document.getElementById('scrollTopBtn');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                scrollBtn.classList.remove('hidden');
-            } else {
-                scrollBtn.classList.add('hidden');
-            }
+            scrollBtn.classList.toggle('hidden', window.scrollY <= 300);
         });
-        scrollBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
+
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMobile = document.getElementById('closeMobile');
+        function toggleMenu(open) {
+            hamburger.classList.toggle('open', open);
+            mobileMenu.classList.toggle('open', open);
+            hamburger.setAttribute('aria-expanded', open);
+            document.body.style.overflow = open ? 'hidden' : '';
+        }
+        hamburger.addEventListener('click', () => toggleMenu(!hamburger.classList.contains('open')));
+        closeMobile.addEventListener('click', () => toggleMenu(false));
+        mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
     </script>
 </body>
-
 </html>

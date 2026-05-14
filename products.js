@@ -37,62 +37,97 @@ const products = [
 ];
 
 // --- Gestion du tri, filtre et compteur produits ---
-function renderProducts(category = 'all', sort = 'default') {
+function renderProducts(category = 'all', sort = 'default', search = '') {
     const grid = document.getElementById("productGrid");
     const productCount = document.getElementById("productCount");
-    let filtered = products.filter(p => category === 'all' || p.category === category);
+    const noResults = document.getElementById("noResults");
+    const query = search.toLowerCase().trim();
+
+    let filtered = products.filter(p => {
+        const matchCat = category === 'all' || p.category === category;
+        const matchSearch = !query ||
+            (p.title || '').toLowerCase().includes(query) ||
+            (p.author || '').toLowerCase().includes(query);
+        return matchCat && matchSearch;
+    });
+
     switch (sort) {
-        case 'price-asc':
-            filtered.sort((a, b) => a.price - b.price); break;
-        case 'price-desc':
-            filtered.sort((a, b) => b.price - a.price); break;
-        case 'name-asc':
-            filtered.sort((a, b) => (a.title || '').localeCompare(b.title || '')); break;
-        case 'name-desc':
-            filtered.sort((a, b) => (b.title || '').localeCompare(a.title || '')); break;
+        case 'price-asc':  filtered.sort((a, b) => a.price - b.price); break;
+        case 'price-desc': filtered.sort((a, b) => b.price - a.price); break;
+        case 'name-asc':   filtered.sort((a, b) => (a.title||'').localeCompare(b.title||'')); break;
+        case 'name-desc':  filtered.sort((a, b) => (b.title||'').localeCompare(a.title||'')); break;
     }
-    grid.innerHTML = filtered.map(p => `
-        <div class="product-card cursor-pointer bg-shonen-gray border border-shonen-gray hover:border-shonen-red group transition-all" data-category="${p.category}" data-id="${p.id}">
-            <div class="h-64 overflow-hidden relative bg-black">
-                ${p.badge ? `<span class="absolute top-2 left-2 ${p.badgeColor || 'bg-shonen-red'} text-white text-xs font-bold px-2 py-1">${p.badge}</span>` : ""}
-                <img src="${p.img}" alt="${p.title}" class="w-full h-full object-cover" />
+
+    if (filtered.length === 0) {
+        grid.innerHTML = '';
+        if (noResults) noResults.classList.remove('hidden');
+    } else {
+        if (noResults) noResults.classList.add('hidden');
+        grid.innerHTML = filtered.map(p => `
+            <div class="product-card cursor-pointer bg-shonen-gray border border-shonen-gray hover:border-shonen-red rounded-lg overflow-hidden group transition-all"
+                data-category="${p.category}" data-id="${p.id}">
+                <div class="h-56 overflow-hidden relative bg-black">
+                    ${p.badge ? `<span class="absolute top-2 left-2 z-10 ${p.badgeColor || 'bg-shonen-red'} text-white text-xs font-bold px-2 py-0.5 rounded">${p.badge}</span>` : ""}
+                    <img src="${p.img}" alt="${p.title}"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy" onerror="this.parentElement.classList.add('img-placeholder')"/>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-sm leading-tight mb-1 line-clamp-2">${p.title}</h3>
+                    <p class="text-gray-400 text-xs mb-3">${p.author || ''}</p>
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="text-shonen-red font-bold text-lg">${p.price.toFixed(2)} €</span>
+                        <button class="add-to-cart-btn flex-1 bg-shonen-red hover:bg-red-700 text-white text-xs font-bold py-2 px-2 rounded transition-colors"
+                            onclick="event.stopPropagation(); addToCart('${p.id}', '${p.title.replace(/'/g,"\\'")}', ${p.price}, true)">
+                            + Panier
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="p-4">
-                <h3 class="font-bold text-lg">${p.title}</h3>
-                <p class="text-gray-400 text-sm mb-3">${p.author || ''}</p>
-                <span class="text-shonen-red font-bold text-xl">${p.price.toFixed(2)} €</span>
-                <button class="mt-3 w-full border border-gray-600 hover:bg-shonen-red px-3 py-2 rounded" onclick="addToCart('${p.id}', '${p.title}', ${p.price})">Ajouter</button>
-            </div>
-        </div>
-    `).join("");
+        `).join("");
+    }
+
     if (productCount) productCount.textContent = filtered.length;
 }
 
-// REND LA VARIABLE products ACCESSIBLE GLOBALEMENT POUR LA MODALE
+// Rend la variable products accessible globalement pour la modale
 window.products = products;
 
-// Initialisation et gestion des filtres/tri
+// Initialisation et gestion des filtres / tri / recherche
 document.addEventListener('DOMContentLoaded', function () {
     let currentCategory = 'all';
     let currentSort = 'default';
+    let currentSearch = '';
     const filterButtons = document.querySelectorAll('.filter-btn');
     const sortSelect = document.getElementById('sortSelect');
+    const searchInput = document.getElementById('searchInput');
 
     filterButtons.forEach(btn => {
         btn.addEventListener('click', function () {
             filterButtons.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
             currentCategory = this.dataset.category;
-            renderProducts(currentCategory, currentSort);
+            renderProducts(currentCategory, currentSort, currentSearch);
         });
     });
 
     if (sortSelect) {
         sortSelect.addEventListener('change', function () {
             currentSort = this.value;
-            renderProducts(currentCategory, currentSort);
+            renderProducts(currentCategory, currentSort, currentSearch);
         });
     }
 
-    renderProducts(currentCategory, currentSort);
+    if (searchInput) {
+        let debounceTimer;
+        searchInput.addEventListener('input', function () {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                currentSearch = this.value;
+                renderProducts(currentCategory, currentSort, currentSearch);
+            }, 200);
+        });
+    }
+
+    renderProducts(currentCategory, currentSort, currentSearch);
 });
