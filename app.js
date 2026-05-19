@@ -103,11 +103,13 @@ async function addStage(stage) {
                 contact_person: stage.contactPerson,
                 notes: stage.notes,
 
-                // ✅ CORRECTION IMPORTANTE
-                convention_sent: stage.convention?.sent ?? false,
-                signed_by_company: stage.convention?.signedByCo ?? false,
-                signed_by_student: stage.convention?.signedByStudent ?? false,
-                signed_by_school: stage.convention?.signedByEstablishment ?? false
+                convention: stage.convention || {
+                    sent: false,
+                    signedByCo: false,
+                    signedByStudent: false,
+                    signedByEstablishment: false
+                }
+
             })
         });
 
